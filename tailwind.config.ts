@@ -8,10 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
+     colors:{
+        'custom-skin':'#F6ECD9',
+        'custom-desc-bg':'#FEFBF3'
+      },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
   },
