@@ -23,10 +23,15 @@ const Nav = () => {
           </div>
           <div className="flex border-b-2 border-red-900 justify-between pb-4 font-semibold">
             <div className="flex justify-around w-2/4">
-              <button>Men</button>
-              <button>Women</button>
+              <Link href="/men">
+                <button>Men</button>
+              </Link>
+              <Link href="/women">
+                <button>Women</button>
+              </Link>
+              {/* <button>Women</button>
               <button>Kids</button>
-              <button>Blogs</button>
+              <button>Blogs</button> */}
             </div>
             <div className="flex w-1/4 justify-around">
               <button className="items-center flex-col">

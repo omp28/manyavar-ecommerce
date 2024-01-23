@@ -1,11 +1,8 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import main from "../components/main.png";
 import Image from "next/image";
 export default function Home() {
   return (
     <>
-      <Navbar />
       <div>
         <Image src={main} alt="hero" />{" "}
       </div>
@@ -175,7 +172,6 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <Footer />
     </>
   );
 }

@@ -1,6 +1,12 @@
 import { useRouter } from "next/router";
 
-export default function post() {
+export default function Post() {
   const router = useRouter();
-  return <p>the slug is {router.query}</p>;
+  const { slug } = router.query;
+
+  return (
+    <div>
+      <p>The slug is {slug}</p>
+    </div>
+  );
 }
