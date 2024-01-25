@@ -10,16 +10,24 @@ import { IoBagCheckOutline } from "react-icons/io5";
 const Nav = () => {
   const ref = useRef();
   const toggleCart = () => {
-    if (ref.current.classList.contains("translate-x-full")) {
-      ref.current.classList.remove("translate-x-full");
+    //  if (ref.current.classList.contains("translate-x-full")) {
+    //    ref.current.classList.remove("translate-x-full");
+    //    ref.current.classList.add("translate-x-0");
+    //  } else if (!ref.current.classList.contains("translate-x-full")) {
+    //    ref.current.classList.remove("translate-x-0");
+    //    ref.current.classList.add("translate-x-full");
+    //  }
+    if (ref.current.classList.contains("hidden")) {
+      ref.current.classList.remove("hidden");
       ref.current.classList.add("translate-x-0");
-    } else if (!ref.current.classList.contains("translate-x-full")) {
+    } else if (!ref.current.classList.contains("hidden")) {
       ref.current.classList.remove("translate-x-0");
-      ref.current.classList.add("translate-x-full");
+      ref.current.classList.add("hidden");
     }
   };
+
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <div className="flex-col bg-red-950">
         <div className="bg-custom-skin">
           <div className="flex justify-center items-center py-2">
@@ -62,7 +70,7 @@ const Nav = () => {
               {/* SIDECART  */}
               <div
                 ref={ref}
-                className=" z-10 flex-col sidebar absolute top-0 right-0 bg-custom-skin p-10   border-4 border-red-950 transition-transform translate-x-full transform "
+                className=" z-10 flex-col sidebar absolute top-0 right-0 bg-custom-skin p-10   border-4 border-red-950 transition-transform hidden transform  "
               >
                 <h1 className="flex justify-center items-center py-2 text-2xl text-red-900">
                   YOUR CART
