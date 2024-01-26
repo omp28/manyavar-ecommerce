@@ -83,123 +83,67 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                 </div>
                 <ol>
                   {/* first list */}
-                  <li className=" list-decimal">
-                    <div className="flex font-semibold my-1">
-                      <div className=" text-center  w-2/3">
-                        under armour jacket{" "}
-                      </div>
-                      <div className=" flex text-center justify-around  w-1/3">
-                        <button>
-                          <AiOutlineMinusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                        <h1 className=" items-center flex">1</h1>
-                        <button>
-                          <AiOutlinePlusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                      </div>
+                  {Object.keys(cart).length === 0 && (
+                    <div>
+                      <h1>Cart is EMPTY !</h1>
+                      <h1>Add items to checkout</h1>
                     </div>
-                  </li>
-                  <li className=" list-decimal">
-                    <div className="flex font-semibold my-1">
-                      <div className=" text-center  w-2/3">
-                        under armour jacket{" "}
+                  )}
+                  {Object.keys(cart).map((k) => (
+                    <li className=" list-decimal">
+                      <div className="flex font-semibold my-1">
+                        <div className=" text-center  w-2/3">
+                          {cart[k].name}
+                        </div>
+                        <div className=" flex text-center justify-around  w-1/3">
+                          <button>
+                            <AiOutlineMinusCircle
+                              onClick={() => {
+                                removeFromCart(
+                                  k,
+                                  1,
+                                  cart[k].price,
+                                  cart[k].name,
+                                  cart[k].size,
+                                  cart[k].variant
+                                );
+                              }}
+                              className="text-red-800"
+                              size={20}
+                            />
+                          </button>
+                          <h1 className=" items-center flex">{cart[k].qty}</h1>
+
+                          <button>
+                            <AiOutlinePlusCircle
+                              onClick={() => {
+                                addToCart(
+                                  k,
+                                  1,
+                                  cart[k].price,
+                                  cart[k].name,
+                                  cart[k].size,
+                                  cart[k].variant
+                                );
+                              }}
+                              className="text-red-800"
+                              size={20}
+                            />
+                          </button>
+                        </div>
                       </div>
-                      <div className=" flex text-center justify-around  w-1/3">
-                        <button>
-                          <AiOutlineMinusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                        <h1 className=" items-center flex">1</h1>
-                        <button>
-                          <AiOutlinePlusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                  <li className=" list-decimal">
-                    <div className="flex font-semibold my-1">
-                      <div className=" text-center  w-2/3">
-                        under armour jacket{" "}
-                      </div>
-                      <div className=" flex text-center justify-around  w-1/3">
-                        <button>
-                          <AiOutlineMinusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                        <h1 className=" items-center flex">1</h1>
-                        <button>
-                          <AiOutlinePlusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                  <li className=" list-decimal">
-                    <div className="flex font-semibold my-1">
-                      <div className=" text-center  w-2/3">
-                        under armour jacket{" "}
-                      </div>
-                      <div className=" flex text-center justify-around  w-1/3">
-                        <button>
-                          <AiOutlineMinusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                        <h1 className=" items-center flex">1</h1>
-                        <button>
-                          <AiOutlinePlusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                  <li className=" list-decimal">
-                    <div className="flex font-semibold my-1">
-                      <div className=" text-center  w-2/3">
-                        under armour jacket{" "}
-                      </div>
-                      <div className=" flex text-center justify-around  w-1/3">
-                        <button>
-                          <AiOutlineMinusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                        <h1 className=" items-center flex">1</h1>
-                        <button>
-                          <AiOutlinePlusCircle
-                            className="text-red-800"
-                            size={20}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </li>
+                    </li>
+                  ))}
                 </ol>
                 {/* checkout */}
                 <button className=" my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg">
                   <IoBagCheckOutline size={20} /> CheckOut
                 </button>
 
-                <button className="my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg">
+                <button
+                  onClick={clearCart}
+                  className="my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
+                >
                   Clear Cart
                 </button>
               </div>

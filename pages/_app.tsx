@@ -80,7 +80,7 @@ export default function App({ Component, pageProps }: AppProps) {
       />
       <Component
         cart={cart}
-        addTocart={addToCart}
+        addToCart={addToCart}
         remooveFromCart={removeFromCart}
         clearCart={clearCart}
         subTotal={subTotal}
