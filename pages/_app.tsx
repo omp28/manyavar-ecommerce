@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const saveCart = (myCart) => {
     localStorage.setItem("cart", JSON.stringify(myCart));
     let subT = 0;
-    for (let i = 0; i < Object.keys.length; i++) {
+    for (let i = 0; i < Object.keys(myCart).length; i++) {
       subT +=
         myCart[Object.keys(myCart)[i]].qty *
         myCart[Object.keys(myCart)[i]].price;
@@ -73,8 +73,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Nav
         cart={cart}
-        addTocart={addToCart}
-        remooveFromCart={removeFromCart}
+        addToCart={addToCart}
+        removeFromCart={removeFromCart}
         clearCart={clearCart}
         subTotal={subTotal}
       />

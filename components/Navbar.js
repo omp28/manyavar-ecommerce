@@ -7,16 +7,16 @@ import { MdAccountCircle } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
-const Nav = () => {
+const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   const ref = useRef();
-  const toggleCart = () => {
-    //  if (ref.current.classList.contains("translate-x-full")) {
-    //    ref.current.classList.remove("translate-x-full");
-    //    ref.current.classList.add("translate-x-0");
-    //  } else if (!ref.current.classList.contains("translate-x-full")) {
-    //    ref.current.classList.remove("translate-x-0");
-    //    ref.current.classList.add("translate-x-full");
-    //  }
+  console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
+  const toggleCart = ({
+    cart,
+    addToCart,
+    removeFromCart,
+    clearCart,
+    subTotal,
+  }) => {
     if (ref.current.classList.contains("hidden")) {
       ref.current.classList.remove("hidden");
       ref.current.classList.add("translate-x-0");
