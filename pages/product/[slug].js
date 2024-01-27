@@ -181,7 +181,7 @@ export default function Post({ addToCart }) {
                 <button
                   onClick={() => {
                     // itemCode, qty, price, name, size, variant
-                    addToCart(slug, 1, 499, "wear the code ", "Xl", "red");
+                    addToCart(slug, 1, 499, "under armour jacket", "Xl", "red");
                   }}
                   className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
                 >
