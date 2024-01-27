@@ -10,13 +10,7 @@ import { IoBagCheckOutline } from "react-icons/io5";
 const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   const ref = useRef();
   console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
-  const toggleCart = ({
-    cart,
-    addToCart,
-    removeFromCart,
-    clearCart,
-    subTotal,
-  }) => {
+  const toggleCart = ({}) => {
     if (ref.current.classList.contains("hidden")) {
       ref.current.classList.remove("hidden");
       ref.current.classList.add("translate-x-0");
@@ -25,7 +19,16 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
       ref.current.classList.add("hidden");
     }
   };
-
+  useEffect(() => {
+    // Toggle cart visibility when items are added or removed
+    if (Object.keys(cart).length > 0) {
+      ref.current.classList.remove("hidden");
+      ref.current.classList.add("translate-x-0");
+    } else {
+      ref.current.classList.remove("translate-x-0");
+      ref.current.classList.add("hidden");
+    }
+  }, [cart]);
   return (
     <div className="overflow-x-hidden">
       <div className="flex-col bg-red-950">
@@ -70,7 +73,9 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
               {/* SIDECART  */}
               <div
                 ref={ref}
-                className=" z-10 flex-col sidebar absolute top-0 right-0 bg-custom-skin p-10   border-4 border-red-950 transition-transform hidden transform  "
+                className={
+                  " z-10 flex-col sidebar absolute top-0 right-0 bg-custom-skin p-10   border-4 border-red-950 transition-transform transform hidden "
+                }
               >
                 <h1 className="flex justify-center items-center py-2 text-2xl text-red-900">
                   YOUR CART
@@ -135,6 +140,7 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                     </li>
                   ))}
                 </ol>
+                <span className=" w-1/3  ">subTotal : ₹{subTotal}</span>
                 {/* checkout */}
                 <Link href="/checkout">
                   <button className=" my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg">

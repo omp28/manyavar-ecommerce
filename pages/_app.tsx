@@ -12,6 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
     try {
       if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart")));
+        saveCart(JSON.parse(localStorage.getItem("cart")));
       }
     } catch (err) {
       console.error(err);
@@ -72,6 +73,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Nav
+        // key={subTotal}
         cart={cart}
         addToCart={addToCart}
         removeFromCart={removeFromCart}
@@ -81,7 +83,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component
         cart={cart}
         addToCart={addToCart}
-        remooveFromCart={removeFromCart}
+        removeFromCart={removeFromCart}
         clearCart={clearCart}
         subTotal={subTotal}
         {...pageProps}
