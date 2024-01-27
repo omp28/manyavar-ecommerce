@@ -7,6 +7,8 @@ import { MdAccountCircle } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
+import { FaCartShopping } from "react-icons/fa6";
+
 const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   const ref = useRef();
   console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
@@ -44,28 +46,33 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
               />
             </Link>
           </div>
-          <div className="flex border-b-2 border-red-900 justify-between pb-4 font-semibold">
-            <div className="flex justify-around w-2/4">
+          <div className="flex border-b-2 border-red-900 justify-between pb-2  font-semibold">
+            <div className="flex items-center  justify-around w-2/4">
               <Link href="/men">
                 <button>Men</button>
               </Link>
               <Link href="/women">
                 <button>Women</button>
               </Link>
-              {/* <button>Women</button>
-              <button>Kids</button>
-              <button>Blogs</button> */}
+              <Link href="/kids">
+                <button>Kids</button>
+              </Link>
+              <Link href="/blogs">
+                <button>Blogs</button>
+              </Link>
             </div>
             <div className="flex w-1/4 justify-around">
               <button className="items-center flex-col">
-                <div className="flex justify-center p-auto">
-                  <IoIosHeart className="text-red-900" size={20} />
-                </div>
-                <h1 className="text-center">wishlist</h1>
+                <Link href="/login">
+                  <div className="flex justify-center p-auto">
+                    <MdAccountCircle className="text-red-900" size={20} />
+                  </div>
+                  <h1 className="text-center">Account</h1>
+                </Link>
               </button>
               <button onClick={toggleCart}>
                 <div className="flex justify-center p-auto">
-                  <MdAccountCircle className="text-red-900" size={20} />
+                  <FaCartShopping className="text-red-900" size={20} />
                 </div>
                 <h1>cart</h1>
               </button>
