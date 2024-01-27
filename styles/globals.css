@@ -5,3 +5,6 @@
 body {
   overflow-x: hidden;
 }
+img {
+  -webkit-user-drag: none;
+}
