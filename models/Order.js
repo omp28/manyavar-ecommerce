@@ -13,4 +13,5 @@ const OrderSchema = new mongoose.Schema(
   { timeStamp: true }
 );
 
+mongoose.models = {};
 export default mongoose.model("Order", OrderSchema);
