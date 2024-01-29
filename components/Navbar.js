@@ -11,7 +11,7 @@ import { FaCartShopping } from "react-icons/fa6";
 
 const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   const ref = useRef();
-  console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
+  // console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
   const toggleCart = ({}) => {
     if (ref.current.classList.contains("hidden")) {
       ref.current.classList.remove("hidden");

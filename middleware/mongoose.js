@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// middleware to ensure MongoDB connection
 const connectDB = (handler) => async (req, res) => {
   if (mongoose.connections[0].readyState) {
     return handler(req, res);
