@@ -1,23 +1,27 @@
+// men.js
 import React from "react";
 import Link from "next/link";
 import Product from "../models/Products";
 import mongoose from "mongoose";
-const men = ({ producs }) => {
-  // console.log(producs);
+const men = ({ products }) => {
+  // console.log(products);
   return (
     <>
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap -m-4">
-            {Object.keys(producs).map((item) => {
+            {Object.keys(products).map((item) => {
               return (
                 <div key={item._id} className="lg:w-1/4 md:w-1/2 p-4 w-full">
-                  <Link passHref={true} href={`/product/${producs[item].slug}`}>
+                  <Link
+                    passHref={true}
+                    href={`/product/${products[item].slug}`}
+                  >
                     <div className="block relative h-48 rounded overflow-hidden">
                       <img
                         alt="ecommerce"
                         className=" object-cover object-top w-full h-full block"
-                        src={producs[item].img}
+                        src={products[item].img}
                       />
                     </div>
                     <div className="mt-4">
@@ -25,44 +29,44 @@ const men = ({ producs }) => {
                         JACKET
                       </h3>
                       <h2 className="text-gray-900 title-font text-lg font-medium">
-                        {producs[item].title}
+                        {products[item].title}
                       </h2>
-                      <p className="mt-1">${producs[item].price}</p>
+                      <p className="mt-1">${products[item].price}</p>
                       <div>
-                        {producs[item].size.includes("S") && (
+                        {products[item].size.includes("S") && (
                           <span className="inline-block py-1 px-2 rounded bg-gray-200 text-gray-700 text-xs font-medium tracking-widest mr-1">
                             S
                           </span>
                         )}
-                        {producs[item].size.includes("M") && (
+                        {products[item].size.includes("M") && (
                           <span className="inline-block py-1 px-2 rounded bg-gray-200 text-gray-700 text-xs font-medium tracking-widest mr-1">
                             M
                           </span>
                         )}
-                        {producs[item].size.includes("L") && (
+                        {products[item].size.includes("L") && (
                           <span className="inline-block py-1 px-2 rounded bg-gray-200 text-gray-700 text-xs font-medium tracking-widest mr-1">
                             L
                           </span>
                         )}
-                        {producs[item].size.includes("XL") && (
+                        {products[item].size.includes("XL") && (
                           <span className="inline-block py-1 px-2 rounded bg-gray-200 text-gray-700 text-xs font-medium tracking-widest mr-1">
                             XL
                           </span>
                         )}
-                        {producs[item].size.includes("XXL") && (
+                        {products[item].size.includes("XXL") && (
                           <span className="inline-block py-1 px-2 rounded bg-gray-200 text-gray-700 text-xs font-medium tracking-widest mr-1">
                             XXL
                           </span>
                         )}
                       </div>
                       <div>
-                        {producs[item].color.includes("black") && (
+                        {products[item].color.includes("black") && (
                           <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
                         )}
-                        {producs[item].color.includes("white") && (
+                        {products[item].color.includes("white") && (
                           <button className="border-2 border-gray-300 ml-1 bg-white rounded-full w-6 h-6 focus:outline-none"></button>
                         )}
-                        {producs[item].color.includes("red") && (
+                        {products[item].color.includes("red") && (
                           <button className="border-2 border-gray-300 ml-1 bg-red-500 rounded-full w-6 h-6 focus:outline-none"></button>
                         )}
                       </div>
@@ -82,9 +86,9 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGODB_URI);
   }
-  let producs = await Product.find({ category: "men" });
+  let products = await Product.find({ category: "men" });
   let tshirts = {};
-  for (let item of producs) {
+  for (let item of products) {
     if (item.title in tshirts) {
       if (
         !tshirts[item.title].color.includes(item.color) &&
@@ -107,7 +111,7 @@ export async function getServerSideProps(context) {
     }
   }
   return {
-    props: { producs: JSON.parse(JSON.stringify(tshirts)) },
+    props: { products: JSON.parse(JSON.stringify(tshirts)) },
   };
 }
 
