@@ -10,7 +10,8 @@ const config: Config = {
     extend: {
      colors:{
         'custom-skin':'#F6ECD9',
-        'custom-desc-bg':'#FEFBF3'
+        'custom-desc-bg':'#FEFBF3',
+        'custom-bg-footer':'#511E07',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

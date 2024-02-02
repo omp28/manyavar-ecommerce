@@ -5,7 +5,7 @@ import { useState } from "react";
 import mongoose from "mongoose";
 import Product from "../../models/Products";
 export default function Post({ addToCart, product, variants }) {
-  console.log(product, variants);
+  // console.log(product, variants);
   const router = useRouter();
   const { slug } = router.query;
   const [pin, setPin] = useState();
@@ -37,14 +37,14 @@ export default function Post({ addToCart, product, variants }) {
             <img
               alt="ecommerce"
               className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-top rounded"
-              src="https://manyavar.scene7.com/is/image/manyavar/IWD0725D_310-%20BLACK.0990_19-07-2023-12-30:650x900"
+              src={product.img}
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
                 BRAND NAME
               </h2>
               <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-                The Catcher in the Rye
+                {product.title}({product.color}/{product.size})
               </h1>
               <div className="flex mb-4">
                 <span className="flex items-center">
@@ -144,14 +144,7 @@ export default function Post({ addToCart, product, variants }) {
                   </a>
                 </span>
               </div>
-              <p className="leading-relaxed">
-                Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo
-                juiceramps cornhole raw denim forage brooklyn. Everyday carry +1
-                seitan poutine tumeric. Gastropub blue bottle austin listicle
-                pour-over, neutra jean shorts keytar banjo tattooed umami
-                cardigan.
-              </p>
+              <p className="leading-relaxed">{product.desc}</p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
@@ -235,12 +228,35 @@ export default function Post({ addToCart, product, variants }) {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  $58.00
+                  ₹{product.price}
                 </span>
                 <button
                   onClick={() => {
                     // itemCode, qty, price, name, size, variant
-                    addToCart(slug, 1, 499, "under armour jacket", "Xl", "red");
+                    addToCart(
+                      slug,
+                      1,
+                      499,
+                      product.title,
+                      product.size,
+                      product.color
+                    );
+                  }}
+                  className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                >
+                  BUY NOW
+                </button>
+                <button
+                  onClick={() => {
+                    // itemCode, qty, price, name, size, variant
+                    addToCart(
+                      slug,
+                      1,
+                      499,
+                      product.title,
+                      product.size,
+                      product.color
+                    );
                   }}
                   className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
                 >
@@ -260,11 +276,11 @@ export default function Post({ addToCart, product, variants }) {
                 </button>
               </div>
               {/* pincode  */}
-              <div className="flex items-center justify-center p-4">
-                <form className="max-w-sm mx-auto">
+              <div className="  flex items-center justify-center p-4">
+                <form className="  max-w-sm mx-auto">
                   <label
                     htmlFor="pincode-input"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className=" text-center  block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Enter Pincode:
                   </label>
@@ -273,7 +289,7 @@ export default function Post({ addToCart, product, variants }) {
                     type="number"
                     id="pincode-input"
                     aria-describedby="helper-text-explanation"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="90210"
                     required
                   />
@@ -283,9 +299,9 @@ export default function Post({ addToCart, product, variants }) {
                   onClickCapture={checkPincodeService}
                   onClick={checkPincodeService}
                   type="button"
-                  className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 mt-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                  className="  border-2 border-red-700  focus:outline-none text-white bg-gray-900   focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 mt-2 dark:bg-gray-600 dark:hover:bg-gray-900 "
                 >
-                  Red
+                  Check
                 </button>
               </div>
               {/* pincode servicebility */}

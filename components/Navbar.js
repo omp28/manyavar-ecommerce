@@ -12,6 +12,8 @@ import { FaCartShopping } from "react-icons/fa6";
 const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   const ref = useRef();
   // console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
+  console.log("cart value hello");
+  console.log(cart);
   const toggleCart = ({}) => {
     if (ref.current.classList.contains("hidden")) {
       ref.current.classList.remove("hidden");
@@ -32,7 +34,7 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
     }
   }, [cart]);
   return (
-    <div className="overflow-x-hidden">
+    <div className="  sidebar duration-500 overflow-x-hidden">
       <div className="flex-col bg-red-950">
         <div className="bg-custom-skin">
           <div className="flex justify-center items-center py-2">
@@ -104,8 +106,8 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                   {Object.keys(cart).map((k) => (
                     <li className=" list-decimal">
                       <div className="flex font-semibold my-1">
-                        <div className=" text-center  w-2/3">
-                          {cart[k].name}
+                        <div className="  text-center  w-2/3">
+                          {cart[k].name} ( {cart[k].variant}/{cart[k].size} )
                         </div>
                         <div className=" flex text-center justify-around  w-1/3">
                           <button>

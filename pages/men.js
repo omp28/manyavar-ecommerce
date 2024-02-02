@@ -31,7 +31,7 @@ const men = ({ products }) => {
                       <h2 className="text-gray-900 title-font text-lg font-medium">
                         {products[item].title}
                       </h2>
-                      <p className="mt-1">${products[item].price}</p>
+                      <p className="mt-1">₹{products[item].price}</p>
                       <div>
                         {products[item].size.includes("S") && (
                           <span className="inline-block py-1 px-2 rounded bg-gray-200 text-gray-700 text-xs font-medium tracking-widest mr-1">
