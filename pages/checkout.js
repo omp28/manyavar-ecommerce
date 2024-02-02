@@ -68,7 +68,9 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
               {Object.keys(cart).map((k) => (
                 <li className=" list-decimal ml-8">
                   <div className="flex font-semibold my-1">
-                    <div className=" text-center  w-2/3">{cart[k].name}</div>
+                    <div className=" text-center  w-2/3">
+                      {cart[k].name} ({cart[k].variant} /{cart[k].size} )
+                    </div>
                     <div className=" flex text-center justify-around  w-1/3">
                       <button>
                         <AiOutlineMinusCircle

@@ -4,7 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import mongoose from "mongoose";
 import Product from "../../models/Products";
-export default function Post({ addToCart, product, variants }) {
+
+export default function Post({ buyNow, addToCart, product, variants }) {
   // console.log(product, variants);
   const router = useRouter();
   const { slug } = router.query;
@@ -232,8 +233,7 @@ export default function Post({ addToCart, product, variants }) {
                 </span>
                 <button
                   onClick={() => {
-                    // itemCode, qty, price, name, size, variant
-                    addToCart(
+                    buyNow(
                       slug,
                       1,
                       499,
