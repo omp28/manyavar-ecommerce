@@ -56,11 +56,9 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
               <Link href="/women">
                 <button>Women</button>
               </Link>
-              <Link href="/kids">
-                <button>Kids</button>
-              </Link>
-              <Link href="/blogs">
-                <button>Blogs</button>
+
+              <Link href="/accessories">
+                <button>Accessories </button>
               </Link>
             </div>
             <div className="flex w-1/4 justify-around">
@@ -84,7 +82,7 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
               <div
                 ref={ref}
                 className={
-                  " z-10 flex-col sidebar absolute top-0 right-0 bg-custom-skin p-10   border-4 border-red-950  "
+                  " max-w-80 z-10 flex-col sidebar absolute top-0 right-0 bg-custom-skin p-10   border-4 border-red-950  "
                 }
               >
                 <h1 className="flex justify-center items-center py-2 text-2xl text-red-900">
@@ -107,8 +105,13 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                   {Object.keys(cart).map((k) => (
                     <li className=" list-decimal">
                       <div className="flex font-semibold my-1">
-                        <div className="  text-center  w-2/3">
-                          {cart[k].name} ( {cart[k].variant}/{cart[k].size} )
+                        <div className="   text-start  w-2/3">
+                          <h1 className="overflow-hidden overflow-ellipsis whitespace-nowrap max-w-[100%] max-h-9 ">
+                            {cart[k].name}
+                          </h1>
+                          <h1>
+                            ( {cart[k].variant} / {cart[k].size} )
+                          </h1>
                         </div>
                         <div className=" flex text-center justify-around  w-1/3">
                           <button>
