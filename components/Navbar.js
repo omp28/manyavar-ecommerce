@@ -80,10 +80,11 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
               </button>
 
               {/* SIDECART  */}
+
               <div
                 ref={ref}
                 className={
-                  " overflow-y-scroll z-10 flex-col sidebar absolute top-0 right-0 bg-custom-skin p-10   border-4 border-red-950  "
+                  " z-10 flex-col sidebar absolute top-0 right-0 bg-custom-skin p-10   border-4 border-red-950  "
                 }
               >
                 <h1 className="flex justify-center items-center py-2 text-2xl text-red-900">

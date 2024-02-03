@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import mongoose from "mongoose";
 import Product from "../../models/Products";
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Post({ buyNow, addToCart, product, variants }) {
   // console.log(product, variants);
@@ -11,18 +13,43 @@ export default function Post({ buyNow, addToCart, product, variants }) {
   const { slug } = router.query;
   const [pin, setPin] = useState();
   const [service, setService] = useState();
+
   const checkPincodeService = async () => {
     let pins = await fetch("http://localhost:3000/api/pincode");
     let pinJson = await pins.json();
     if (pinJson.includes(parseInt(pin))) {
       setService(true);
+      toast.success("Your Pincode is SERVICABLE", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Slide,
+      });
     } else {
       setService(false);
+      toast.warn("SORRY !Pincode not SERVICABLE", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Slide,
+      });
     }
   };
+
   const onChangePin = (e) => {
     setPin(e.target.value);
   };
+
   const [color, setColor] = useState(product.color);
   const [size, setSize] = useState(product.size);
   const refereshVariant = (newSize, newColor) => {
@@ -33,6 +60,19 @@ export default function Post({ buyNow, addToCart, product, variants }) {
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
+        <ToastContainer
+          position="bottom-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition="Slide"
+        />
         <div className="container px-5 py-24 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img
