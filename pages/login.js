@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
-import { set } from "mongoose";
 
 const login = () => {
   const router = useRouter();
