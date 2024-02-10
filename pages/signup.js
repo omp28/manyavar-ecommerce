@@ -1,6 +1,8 @@
 import React, { use } from "react";
 import Link from "next/link";
 import { useState } from "react";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const signUp = () => {
   const [name, setName] = useState();
@@ -34,10 +36,34 @@ const signUp = () => {
     setEmail("");
     setName("");
     setPassword("");
+    toast.success("your ACCOUNT is created", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   };
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar="false"
+        newestOnTop="false"
+        closeOnClick
+        rtl="false"
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <ToastContainer />
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
