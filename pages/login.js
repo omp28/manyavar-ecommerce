@@ -1,10 +1,85 @@
 import React from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
+import { set } from "mongoose";
 
 const login = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const handleChange = (e) => {
+    if (e.target.name === "email") {
+      setEmail(e.target.value);
+    }
+    if (e.target.name === "password") {
+      setPassword(e.target.value);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { email, password };
+    let res = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    let response = await res.json();
+    console.log("response from login api:");
+    console.log(response);
+
+    setEmail("");
+    setPassword("");
+    if (response.message === "Success !") {
+      toast.success("Login Success", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      setTimeout(() => {
+        router.push("http://localhost:3000");
+      }, 2000);
+    } else {
+      toast.error("LogIn FAILED !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
   return (
     <>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar="false"
+          newestOnTop="false"
+          closeOnClick
+          rtl="false"
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <ToastContainer />
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
@@ -27,7 +102,7 @@ const login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleSubmit} method="POST">
             <div>
               <label
                 htmlFor="email"
@@ -37,6 +112,8 @@ const login = () => {
               </label>
               <div className="mt-2">
                 <input
+                  value={email}
+                  onChange={handleChange}
                   id="email"
                   name="email"
                   type="email"
@@ -66,6 +143,8 @@ const login = () => {
               </div>
               <div className="mt-2">
                 <input
+                  value={password}
+                  onChange={handleChange}
                   id="password"
                   name="password"
                   type="password"
