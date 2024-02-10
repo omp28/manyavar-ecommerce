@@ -1,7 +1,41 @@
-import React from "react";
+import React, { use } from "react";
 import Link from "next/link";
+import { useState } from "react";
 
 const signUp = () => {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const handleChange = (e) => {
+    if (e.target.name === "name") {
+      setName(e.target.value);
+    }
+    if (e.target.name === "email") {
+      setEmail(e.target.value);
+    }
+    if (e.target.name === "password") {
+      setPassword(e.target.value);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { name, email, password };
+    let res = await fetch("http://localhost:3000/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    let response = await res.json();
+    console.log(response);
+
+    setEmail("");
+    setName("");
+    setPassword("");
+  };
+
   return (
     <>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -27,7 +61,7 @@ const signUp = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form onSubmit={handleSubmit} className="space-y-6" method="POST">
             <div>
               {/* Name  */}
               <label
@@ -38,6 +72,8 @@ const signUp = () => {
               </label>
               <div className="mt-2">
                 <input
+                  value={name}
+                  onChange={handleChange}
                   id="name"
                   name="name"
                   type="name"
@@ -54,6 +90,8 @@ const signUp = () => {
               </label>
               <div className="mt-2">
                 <input
+                  value={email}
+                  onChange={handleChange}
                   id="email"
                   name="email"
                   type="email"
@@ -75,6 +113,8 @@ const signUp = () => {
               </div>
               <div className="mt-2">
                 <input
+                  value={password}
+                  onChange={handleChange}
                   id="password"
                   name="password"
                   type="password"
