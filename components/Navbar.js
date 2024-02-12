@@ -8,8 +8,19 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
+import { IoLogIn } from "react-icons/io5";
 
-const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+const Nav = ({
+  Logout,
+  user,
+  cart,
+  addToCart,
+  removeFromCart,
+  clearCart,
+  subTotal,
+}) => {
+  const [dropdown, setDropdown] = useState(false);
+
   const ref = useRef();
   // console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
   console.log("cart value hello");
@@ -62,23 +73,67 @@ const Nav = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
               </Link>
             </div>
             <div className="flex w-1/4 justify-around">
-              <button className="items-center flex-col">
-                <Link href="/login">
-                  <div className="flex justify-center p-auto">
-                    <MdAccountCircle className="text-red-900" size={20} />
-                  </div>
-                  <h1 className="text-center">Account</h1>
-                </Link>
+              <button className="items-center  flex-col">
+                <h1
+                  onClick={() => {
+                    setDropdown(!dropdown);
+                  }}
+                  // onMouseOver={() => {
+                  //   setDropdown(true);
+                  // }}
+                  // onMouseLeave={() => {
+                  //   setDropdown(false);
+                  // }}
+                >
+                  {dropdown && (
+                    <div className="absolute right-52 text-white top-28 bg-custom-bg-footer rounded-md w-28 leading-8 text-sm">
+                      <ul>
+                        <Link href={"/myaccount"}>
+                          <li className="hover:text-yellow-400">My Account</li>
+                        </Link>
+                        <Link href={"/orders"}>
+                          <li className="hover:text-yellow-400">Orders</li>
+                        </Link>
+
+                        <li onClick={Logout} className="hover:text-yellow-400">
+                          LogOut
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                  {user.value && (
+                    <div className="flex-col flex justify-center p-auto">
+                      <div className=" justify-center items-center flex">
+                        <MdAccountCircle
+                          className="text-red-900 justify-center items-center"
+                          size={20}
+                        />
+                      </div>
+
+                      <h1 className="text-center">Account</h1>
+                    </div>
+                  )}
+                </h1>
+                {!user.value && (
+                  <Link href="/login">
+                    <div>
+                      <div className="flex-col justify-center items-center p-auto">
+                        {" "}
+                        <IoLogIn className="text-red-900" size={25} />
+                      </div>
+
+                      <h1>LogIn</h1>
+                    </div>
+                  </Link>
+                )}
               </button>
               <button onClick={toggleCart}>
-                <div className="flex justify-center p-auto">
+                <div className="flex justify-center items-center ">
                   <FaCartShopping className="text-red-900" size={20} />
                 </div>
                 <h1>cart</h1>
               </button>
-
               {/* SIDECART  */}
-
               <div
                 ref={ref}
                 className={
