@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setTotal] = useState(0);
   const [user, setUser] = useState({ value: null });
-  const [key, setKey] = useState(0);
+  const [key, setKey] = useState();
   const router = useRouter();
   const [progress, setProgress] = useState(0);
 
@@ -117,16 +117,18 @@ export default function App({ Component, pageProps }) {
         waitingTime={400}
         onLoaderFinished={() => setProgress(0)}
       />
-      <Nav
-        Logout={logout}
-        user={user}
-        key={key}
-        cart={cart}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-        clearCart={clearCart}
-        subTotal={subTotal}
-      />
+      {key && (
+        <Nav
+          Logout={logout}
+          user={user}
+          key={key}
+          cart={cart}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+          clearCart={clearCart}
+          subTotal={subTotal}
+        />
+      )}
       <Component
         buyNow={buyNow}
         cart={cart}

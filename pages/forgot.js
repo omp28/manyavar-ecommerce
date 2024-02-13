@@ -7,7 +7,7 @@ const forgot = () => {
   const router = useRouter();
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      router.push("http://localhost:3000");
+      router.push(process.env.NEXT_PUBLIC_HOST);
     }
   }, []);
   return (

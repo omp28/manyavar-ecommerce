@@ -8,11 +8,11 @@ import { useEffect } from "react";
 
 const login = () => {
   const router = useRouter();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState(" ");
+  const [password, setPassword] = useState(" ");
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      router.push("http://localhost:3000");
+      router.push(process.env.NEXT_PUBLIC_HOST);
     }
   }, []);
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ const login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { email, password };
-    let res = await fetch("http://localhost:3000/api/login", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const login = () => {
         transition: Bounce,
       });
       setTimeout(() => {
-        router.push("http://localhost:3000");
+        router.push(process.env.NEXT_PUBLIC_HOST);
       }, 2000);
     } else {
       toast.error("LogIn FAILED !", {

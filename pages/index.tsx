@@ -25,9 +25,9 @@ export default function Home() {
                   <svg
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     className="w-6 h-6"
                     viewBox="0 0 24 24"
                   >
@@ -49,9 +49,9 @@ export default function Home() {
                   <svg
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     className="w-6 h-6"
                     viewBox="0 0 24 24"
                   >
@@ -75,9 +75,9 @@ export default function Home() {
                   <svg
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     className="w-6 h-6"
                     viewBox="0 0 24 24"
                   >
@@ -100,9 +100,9 @@ export default function Home() {
                   <svg
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     className="w-6 h-6"
                     viewBox="0 0 24 24"
                   >
@@ -124,9 +124,9 @@ export default function Home() {
                   <svg
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     className="w-6 h-6"
                     viewBox="0 0 24 24"
                   >
@@ -148,9 +148,9 @@ export default function Home() {
                   <svg
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     className="w-6 h-6"
                     viewBox="0 0 24 24"
                   >
