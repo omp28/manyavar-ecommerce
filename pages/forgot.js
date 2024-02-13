@@ -1,7 +1,15 @@
 import React from "react";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const forgot = () => {
+  const router = useRouter();
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("http://localhost:3000");
+    }
+  }, []);
   return (
     <>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

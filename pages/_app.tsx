@@ -4,6 +4,7 @@ import Nav from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import LoadingBar from "react-top-loading-bar";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [cart, setCart] = useState({});
@@ -11,7 +12,15 @@ export default function App({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState({ value: null });
   const [key, setKey] = useState(0);
   const router = useRouter();
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
+    router.events.on("routeChangeStart", () => {
+      setProgress(50);
+    });
+    router.events.on("routeChangeComplete", () => {
+      setProgress(100);
+    });
     try {
       if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart")));
@@ -102,6 +111,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <LoadingBar
+        height={4}
+        color="#511E07"
+        progress={progress}
+        waitingTime={400}
+        onLoaderFinished={() => setProgress(0)}
+      />
       <Nav
         Logout={logout}
         user={user}

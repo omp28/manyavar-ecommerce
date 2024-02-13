@@ -1,14 +1,20 @@
-import React from "react";
+import React, { use } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const login = () => {
   const router = useRouter();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("http://localhost:3000");
+    }
+  }, []);
   const handleChange = (e) => {
     if (e.target.name === "email") {
       setEmail(e.target.value);
