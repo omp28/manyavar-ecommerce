@@ -86,7 +86,7 @@ const Nav = ({
                   // }}
                 >
                   {dropdown && (
-                    <div className="absolute right-52 text-white top-28 bg-custom-bg-footer rounded-md w-28 leading-8 text-sm">
+                    <div className="absolute right-52 text-white top-28 bg-custom-bg-footer rounded-md w-28 leading-8 text-sm z-10">
                       <ul>
                         <Link href={"/myaccount"}>
                           <li className="hover:text-yellow-400">My Account</li>
