@@ -1,12 +1,11 @@
 import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import Nav from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import LoadingBar from "react-top-loading-bar";
+import Nav from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setTotal] = useState(0);
   const [user, setUser] = useState({ value: null });
@@ -21,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
     router.events.on("routeChangeComplete", () => {
       setProgress(100);
     });
+
     try {
       if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart")));
@@ -30,6 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
       console.error(err);
       localStorage.clear();
     }
+
     const token = localStorage.getItem("token");
     if (token) {
       setUser({ value: token });
@@ -54,7 +55,6 @@ export default function App({ Component, pageProps }: AppProps) {
     setTotal(subT);
   };
 
-  // Add to cart
   const addToCart = (itemCode, qty, price, name, size, variant) => {
     let myCart = { ...cart };
     if (itemCode in cart) {
@@ -71,7 +71,7 @@ export default function App({ Component, pageProps }: AppProps) {
     setCart(myCart);
     saveCart(myCart);
   };
-  // buyNow
+
   const buyNow = (itemCode, qty, price, name, size, variant) => {
     let myCart = {
       itemCode: {
@@ -88,7 +88,6 @@ export default function App({ Component, pageProps }: AppProps) {
     router.push("/checkout");
   };
 
-  // clearcart
   const clearCart = () => {
     setCart({});
     saveCart({});
@@ -96,7 +95,6 @@ export default function App({ Component, pageProps }: AppProps) {
     localStorage.removeItem("cart");
   };
 
-  // removeFromCart
   const removeFromCart = (itemCode, qty, price, name, size, variant) => {
     let myCart = { ...cart };
     if (itemCode in cart) {
