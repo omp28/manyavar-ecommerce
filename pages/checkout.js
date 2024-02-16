@@ -10,37 +10,40 @@ import Script from "next/script";
 const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
   const initiatePayment = async () => {
     let txnToken;
-    let amount;
+    let oid = Math.floor(Math.random() * Date.now());
     // get transaction token
-    let a = await fetch(`${NEXT_PUBLIC_HOST}/api/pretransaction`);
-    const data = { cart, subTotal };
+    const data = { cart, subTotal, oid };
     async function postJSON(data) {
       try {
-        const response = await fetch("https://example.com/profile", {
-          method: "POST", // or 'PUT'
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-
-        const result = await response.json();
-        console.log("Success:", result);
+        let a = await fetch(
+          `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+          {
+            method: "POST", // or 'PUT'
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        let txnToken = await a.json();
+        console.log(txnToken);
+        // Call the next steps after obtaining the token
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error in postJSON:", error);
       }
     }
 
-    postJSON(data);
+    // Call the postJSON function to get the transaction token
+    await postJSON(data);
 
     var config = {
       root: "",
       flow: "DEFAULT",
       data: {
-        orderId: Math.random() /* update order id */,
+        orderId: oid /* update order id */,
         token: txnToken /* update token value */,
         tokenType: "TXN_TOKEN",
-        amount: amount /* update amount */,
+        amount: subTotal /* update amount */,
       },
       handler: {
         notifyMerchant: function (eventName, data) {
@@ -52,6 +55,8 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
     };
 
     // initialze configuration using init method
+    console.log("window.Paytm:", window.Paytm);
+
     window.Paytm.CheckoutJS.init(config)
       .then(function onSuccess() {
         // after successfully updating configuration, invoke JS Checkout
@@ -61,6 +66,7 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
         console.log("error => ", error);
       });
   };
+
   return (
     <div className=" bg-custom-skin">
       <Head>
@@ -72,7 +78,7 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
       <Script
         type="application/javascript"
         crossorigin="anonymous"
-        src={`${process.env.PAYTM_HOST}/merchantpgui/checoutjs/merchants/${process.env.PAYTM_MID}.js`}
+        src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgui/checoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}
         onLoad="onScriptLoad()"
       ></Script>
 
