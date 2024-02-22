@@ -16,19 +16,33 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
   const [zip, setZip] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [disabled, setDisabled] = useState(true);
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
       setName(e.target.value);
-    } else if (e.target.name == "address") {
+    } else if (e.target.name === "address") {
       setAddress(e.target.value);
-    } else if (e.target.name == "zip") {
+    } else if (e.target.name === "zip") {
       setZip(e.target.value);
-    } else if (e.target.name == "phone") {
+    } else if (e.target.name === "phone") {
       setPhone(e.target.value);
-    } else if (e.target.name == "email") {
+    } else if (e.target.name === "email") {
       setEmail(e.target.value);
     }
+
+    // console.log(name, address, city, state, zip, phone, email);
+    setTimeout(() => {
+      if (
+        name.length > 3 &&
+        address.length > 3 &&
+        zip.length > 5 &&
+        phone.length > 9 &&
+        email.length > 5
+      ) {
+        setDisabled(false);
+      }
+    }, 100);
   };
 
   // const initiatePayment = async () => {
@@ -115,6 +129,7 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="Name"
+            name="name"
           />
           <input
             onChange={handleChange}
@@ -122,27 +137,32 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="Address"
+            name="address"
           />
           <input
+            readOnly={true}
             onChange={handleChange}
             value={city}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="City"
+            name="city"
           />
           <input
+            readOnly={true}
             onChange={handleChange}
             value={state}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="State"
+            name="state"
           />
           <input
-            onChange={handleChange}
             value={zip}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="number"
             placeholder="Zip Code"
+            name="zip"
           />
           <input
             onChange={handleChange}
@@ -150,6 +170,7 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="number"
             placeholder="Phone Number"
+            name="phone"
           />
           <input
             onChange={handleChange}
@@ -157,6 +178,7 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="Email"
+            name="email"
           />
         </div>
         <div className="flex mt-4 justify-center items-center">
@@ -224,9 +246,17 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
             <div className=" flex justify-center items-center py-8">
               <span className=" w-1/3  ">subTotal : ₹{subTotal}</span>
               <button
-                disabled={true}
+                disabled={disabled}
                 // onClick={initiatePayment}
-                className=" disabled:bg-custom-skin my-2 w-1/3  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
+                className={`${
+                  disabled
+                    ? "bg-custom-skin"
+                    : "bg-orange-500 hover:bg-orange-700"
+                } my-2 w-1/3 flex text-center text-white font-semibold py-2 px-4 border ${
+                  disabled
+                    ? "border-custom-skin"
+                    : "border-orange-700 hover:border-transparent"
+                } rounded-lg`}
               >
                 <IoBagCheckOutline size={20} /> PAY ₹{subTotal}
               </button>

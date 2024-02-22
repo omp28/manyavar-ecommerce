@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import LoadingBar from "react-top-loading-bar";
 import Nav from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ToastContainer } from "react-toastify";
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
@@ -34,8 +35,8 @@ export default function App({ Component, pageProps }) {
     const token = localStorage.getItem("token");
     if (token) {
       setUser({ value: token });
-      setKey(Math.random());
     }
+    setKey(Math.random());
   }, [router.query]);
 
   const logout = () => {
@@ -117,18 +118,18 @@ export default function App({ Component, pageProps }) {
         waitingTime={400}
         onLoaderFinished={() => setProgress(0)}
       />
-      {/* {key && (  */}
-      <Nav
-        Logout={logout}
-        user={user}
-        key={key}
-        cart={cart}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-        clearCart={clearCart}
-        subTotal={subTotal}
-      />
-      {/* )} */}
+      {key && (
+        <Nav
+          Logout={logout}
+          user={user}
+          key={key}
+          cart={cart}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+          clearCart={clearCart}
+          subTotal={subTotal}
+        />
+      )}
       <Component
         buyNow={buyNow}
         cart={cart}
