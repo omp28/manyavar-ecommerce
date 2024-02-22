@@ -23,8 +23,8 @@ const Nav = ({
 
   const ref = useRef();
   // console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
-  console.log("cart value hello");
-  console.log(cart);
+  // console.log("cart value hello");
+  // console.log(cart);
   const toggleCart = ({}) => {
     if (ref.current.classList.contains("hidden")) {
       ref.current.classList.remove("hidden");

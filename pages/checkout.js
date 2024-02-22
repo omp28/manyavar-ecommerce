@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { IoIosHeart } from "react-icons/io";
 import { MdAccountCircle } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -8,64 +9,86 @@ import Link from "next/link";
 import Head from "next/head";
 import Script from "next/script";
 const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
-  const initiatePayment = async () => {
-    let txnToken;
-    let oid = Math.floor(Math.random() * Date.now());
-    // get transaction token
-    const data = { cart, subTotal, oid };
-    async function postJSON(data) {
-      try {
-        let a = await fetch(
-          `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
-          {
-            method: "POST", // or 'PUT'
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        let txnToken = await a.json();
-        console.log(txnToken);
-        // Call the next steps after obtaining the token
-      } catch (error) {
-        console.error("Error in postJSON:", error);
-      }
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleChange = (e) => {
+    if (e.target.name === "name") {
+      setName(e.target.value);
+    } else if (e.target.name == "address") {
+      setAddress(e.target.value);
+    } else if (e.target.name == "zip") {
+      setZip(e.target.value);
+    } else if (e.target.name == "phone") {
+      setPhone(e.target.value);
+    } else if (e.target.name == "email") {
+      setEmail(e.target.value);
     }
-
-    // Call the postJSON function to get the transaction token
-    await postJSON(data);
-
-    var config = {
-      root: "",
-      flow: "DEFAULT",
-      data: {
-        orderId: oid /* update order id */,
-        token: txnToken /* update token value */,
-        tokenType: "TXN_TOKEN",
-        amount: subTotal /* update amount */,
-      },
-      handler: {
-        notifyMerchant: function (eventName, data) {
-          console.log("notifyMerchant handler function called");
-          console.log("eventName => ", eventName);
-          console.log("data => ", data);
-        },
-      },
-    };
-
-    // initialze configuration using init method
-    console.log("window.Paytm:", window.Paytm);
-
-    window.Paytm.CheckoutJS.init(config)
-      .then(function onSuccess() {
-        // after successfully updating configuration, invoke JS Checkout
-        window.Paytm.CheckoutJS.invoke();
-      })
-      .catch(function onError(error) {
-        console.log("error => ", error);
-      });
   };
+
+  // const initiatePayment = async () => {
+  //   let txnToken;
+  //   let oid = Math.floor(Math.random() * Date.now());
+  //   // get transaction token
+  //   const data = { cart, subTotal, oid };
+  //   async function postJSON(data) {
+  //     try {
+  //       let a = await fetch(
+  //         `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+  //         {
+  //           method: "POST", // or 'PUT'
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify(data),
+  //         }
+  //       );
+  //       let txnToken = await a.json();
+  //       console.log(txnToken);
+  //       // Call the next steps after obtaining the token
+  //     } catch (error) {
+  //       console.error("Error in postJSON:", error);
+  //     }
+  //   }
+
+  //   // Call the postJSON function to get the transaction token
+  //   await postJSON(data);
+
+  //   var config = {
+  //     root: "",
+  //     flow: "DEFAULT",
+  //     data: {
+  //       orderId: oid /* update order id */,
+  //       token: txnToken /* update token value */,
+  //       tokenType: "TXN_TOKEN",
+  //       amount: subTotal /* update amount */,
+  //     },
+  //     handler: {
+  //       notifyMerchant: function (eventName, data) {
+  //         console.log("notifyMerchant handler function called");
+  //         console.log("eventName => ", eventName);
+  //         console.log("data => ", data);
+  //       },
+  //     },
+  //   };
+
+  //   // initialze configuration using init method
+  //   console.log("window.Paytm:", window.Paytm);
+
+  //   window.Paytm.CheckoutJS.init(config)
+  //     .then(function onSuccess() {
+  //       // after successfully updating configuration, invoke JS Checkout
+  //       window.Paytm.CheckoutJS.invoke();
+  //     })
+  //     .catch(function onError(error) {
+  //       console.log("error => ", error);
+  //     });
+  // };
 
   return (
     <div className=" bg-custom-skin">
@@ -75,48 +98,62 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
           content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
         />
       </Head>
-      <Script
+      {/* <Script
         type="application/javascript"
         crossorigin="anonymous"
         src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgui/checoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}
         onLoad="onScriptLoad()"
-      ></Script>
+      ></Script> */}
 
       <h1 className=" font-bold text-2xl text-center py-8">Checkout</h1>
       <h2 className=" text-center ">Delivery Details</h2>
       <div className=" mx-auto">
         <div className="flex flex-col justify-center items-center">
           <input
+            onChange={handleChange}
+            value={name}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="Name"
           />
           <input
+            onChange={handleChange}
+            value={address}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="Address"
           />
           <input
+            onChange={handleChange}
+            value={city}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="City"
           />
           <input
+            onChange={handleChange}
+            value={state}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="State"
           />
           <input
+            onChange={handleChange}
+            value={zip}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-            type="integer"
+            type="number"
             placeholder="Zip Code"
           />
           <input
+            onChange={handleChange}
+            value={phone}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-            type="integer"
+            type="number"
             placeholder="Phone Number"
           />
           <input
+            onChange={handleChange}
+            value={email}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
             placeholder="Email"
@@ -187,8 +224,9 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
             <div className=" flex justify-center items-center py-8">
               <span className=" w-1/3  ">subTotal : ₹{subTotal}</span>
               <button
-                onClick={initiatePayment}
-                className=" my-2 w-1/3  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
+                disabled={true}
+                // onClick={initiatePayment}
+                className=" disabled:bg-custom-skin my-2 w-1/3  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
               >
                 <IoBagCheckOutline size={20} /> PAY ₹{subTotal}
               </button>
