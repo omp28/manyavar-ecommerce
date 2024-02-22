@@ -36,73 +36,94 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
       if (
         name.length > 3 &&
         address.length > 3 &&
-        zip.length > 5 &&
-        phone.length > 9 &&
-        email.length > 5
+        zip.length > 3 &&
+        phone.length > 3 &&
+        email.length > 3
       ) {
         setDisabled(false);
       }
     }, 100);
   };
 
-  // const initiatePayment = async () => {
-  //   let txnToken;
-  //   let oid = Math.floor(Math.random() * Date.now());
-  //   // get transaction token
-  //   const data = { cart, subTotal, oid };
-  //   async function postJSON(data) {
-  //     try {
-  //       let a = await fetch(
-  //         `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
-  //         {
-  //           method: "POST", // or 'PUT'
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify(data),
-  //         }
-  //       );
-  //       let txnToken = await a.json();
-  //       console.log(txnToken);
-  //       // Call the next steps after obtaining the token
-  //     } catch (error) {
-  //       console.error("Error in postJSON:", error);
-  //     }
-  //   }
+  const initiatePayment = async () => {
+    let txnToken;
+    let oid = Math.floor(Math.random() * Date.now());
 
-  //   // Call the postJSON function to get the transaction token
-  //   await postJSON(data);
+    // Create an array to store detailed product information
+    const productsArray = Object.keys(cart).map((k) => ({
+      productId: k,
+      quantity: cart[k].qty,
+      price: cart[k].price,
+      name: cart[k].name,
+      size: cart[k].size,
+      variant: cart[k].variant,
+    }));
 
-  //   var config = {
-  //     root: "",
-  //     flow: "DEFAULT",
-  //     data: {
-  //       orderId: oid /* update order id */,
-  //       token: txnToken /* update token value */,
-  //       tokenType: "TXN_TOKEN",
-  //       amount: subTotal /* update amount */,
-  //     },
-  //     handler: {
-  //       notifyMerchant: function (eventName, data) {
-  //         console.log("notifyMerchant handler function called");
-  //         console.log("eventName => ", eventName);
-  //         console.log("data => ", data);
-  //       },
-  //     },
-  //   };
+    // get transaction token
+    const data = {
+      cart: productsArray,
+      subTotal,
+      oid,
+      email,
+      name,
+      address,
+      zip,
+      phone,
+    };
 
-  //   // initialze configuration using init method
-  //   console.log("window.Paytm:", window.Paytm);
+    async function postJSON(data) {
+      try {
+        let a = await fetch(
+          `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        let txnToken = await a.json();
+        console.log(txnToken);
+        // Call the next steps after obtaining the token
+      } catch (error) {
+        console.error("Error in postJSON:", error);
+      }
+    }
 
-  //   window.Paytm.CheckoutJS.init(config)
-  //     .then(function onSuccess() {
-  //       // after successfully updating configuration, invoke JS Checkout
-  //       window.Paytm.CheckoutJS.invoke();
-  //     })
-  //     .catch(function onError(error) {
-  //       console.log("error => ", error);
-  //     });
-  // };
+    // Call the postJSON function to get the transaction token
+    await postJSON(data);
+
+    var config = {
+      root: "",
+      flow: "DEFAULT",
+      data: {
+        orderId: oid,
+        token: txnToken,
+        tokenType: "TXN_TOKEN",
+        amount: subTotal,
+      },
+      handler: {
+        notifyMerchant: function (eventName, data) {
+          console.log("notifyMerchant handler function called");
+          console.log("eventName => ", eventName);
+          console.log("data => ", data);
+        },
+      },
+    };
+
+    // initialze configuration using init method
+    console.log("window.Paytm:", window.Paytm);
+
+    window.Paytm.CheckoutJS.init(config)
+      .then(function onSuccess() {
+        // after successfully updating configuration, invoke JS Checkout
+        window.Paytm.CheckoutJS.invoke();
+      })
+      .catch(function onError(error) {
+        console.log("error => ", error);
+      });
+  };
 
   return (
     <div className=" bg-custom-skin">
@@ -159,6 +180,7 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
           />
           <input
             value={zip}
+            onChange={handleChange}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="number"
             placeholder="Zip Code"
@@ -247,7 +269,7 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
               <span className=" w-1/3  ">subTotal : ₹{subTotal}</span>
               <button
                 disabled={disabled}
-                // onClick={initiatePayment}
+                onClick={initiatePayment}
                 className={`${
                   disabled
                     ? "bg-custom-skin"

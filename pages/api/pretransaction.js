@@ -1,8 +1,22 @@
 const https = require("https");
 const PaytmChecksum = require("PaytmChecksum");
+import connectDB from "../../middleware/mongoose";
+import Order from "../../models/Order";
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   if (req.method === "POST") {
+    // initialte an order corressponding to this order id
+
+    let order = new Order({
+      email: req.body.email,
+      orderId: req.body.oid,
+      amount: req.body.subTotal,
+      address: req.body.address,
+      products: req.body.cart,
+    });
+
+    await order.save();
+
     var paytmParams = {};
 
     paytmParams.body = {
@@ -74,4 +88,6 @@ export default async function handler(req, res) {
     let myr = await requestAsync();
     res.status(200).json(myr);
   }
-}
+};
+
+export default connectDB(handler);
