@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <div>
-        <Image src={main} alt="hero" />{" "}
+        <Image priority={false} src={main} alt="hero" />
       </div>
       {/* products  */}
       <section className="text-gray-600 body-font">

@@ -220,7 +220,7 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
                 </div>
               )}
               {Object.keys(cart).map((k) => (
-                <li className=" list-decimal ml-8">
+                <li key={k} className=" list-decimal ml-8">
                   <div className="flex font-semibold my-1">
                     <div className=" text-center  w-2/3">
                       {cart[k].name} ({cart[k].variant} /{cart[k].size} )

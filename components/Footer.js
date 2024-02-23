@@ -16,7 +16,7 @@ const Footer = () => {
         <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left md:mt-0 mt-10">
             <a className="flex title-font font-medium items-center md:justify-start justify-center text-white-900">
-              <Image className=" h-34 w-34" src={logo} />
+              <Image alt="logo" className=" h-34 w-34" src={logo} />
             </a>
 
             <span className=" inline-flex sm:ml-auto sm:mt-0 mt-2 pt-4  justify-center sm:justify-start">

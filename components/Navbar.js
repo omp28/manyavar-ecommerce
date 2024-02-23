@@ -51,6 +51,7 @@ const Nav = ({
           <div className="flex justify-center items-center py-2">
             <Link href="/">
               <Image
+                priority={true}
                 draggable="false"
                 width={275}
                 className=""
@@ -158,7 +159,7 @@ const Nav = ({
                     </div>
                   )}
                   {Object.keys(cart).map((k) => (
-                    <li className=" list-decimal">
+                    <li key={k} className=" list-decimal">
                       <div className="flex font-semibold my-1">
                         <div className="   text-start  w-2/3">
                           <h1 className="overflow-hidden overflow-ellipsis whitespace-nowrap max-w-[100%] max-h-9 ">

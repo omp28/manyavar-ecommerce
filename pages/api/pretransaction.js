@@ -17,6 +17,12 @@ const handler = async (req, res) => {
 
     await order.save();
 
+    // check if cart is tempered
+
+    // check if cart items is out of stock
+
+    // check if details are correct
+
     var paytmParams = {};
 
     paytmParams.body = {
