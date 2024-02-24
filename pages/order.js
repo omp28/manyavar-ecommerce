@@ -1,6 +1,13 @@
 import React from "react";
-
-const order = () => {
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import mongoose from "mongoose";
+import Order from "../models/Order";
+const Myorder = ({ order }) => {
+  // if (!order) {
+  //   return <div className=" text-center my-4">Order not found</div>;
+  // }
+  console.log(order);
   return (
     <section className="text-gray-600 body-font overflow-hidden">
       <div className="container px-5 py-24 mx-auto">
@@ -15,12 +22,12 @@ const order = () => {
             <h1 className=" text-sm my-4 ">
               Your order has been successfully pladced
             </h1>
-            <div class="flex mb-4">
-              <a class="flex-grow text-center    py-2 text-lg px-1">ITEM</a>
-              <a class="flex-grow text-center  border-gray-300 py-2 text-lg px-1">
+            <div className="flex mb-4">
+              <a className="flex-grow text-center    py-2 text-lg px-1">ITEM</a>
+              <a className="flex-grow text-center  border-gray-300 py-2 text-lg px-1">
                 QUANTITY
               </a>
-              <a class="flex-grow text-center  border-gray-300 py-2 text-lg px-1">
+              <a className="flex-grow text-center  border-gray-300 py-2 text-lg px-1">
                 ITEM TOTAL
               </a>
             </div>
@@ -59,4 +66,41 @@ const order = () => {
   );
 };
 
-export default order;
+export async function getServerSideProps(context) {
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGODB_URI);
+  }
+
+  // try {
+  let order;
+
+  // Check if the provided id is a valid ObjectId
+  // if (mongoose.Types.ObjectId.isValid(context.query.id)) {
+  //   order = await Order.findById(context.query.id);
+  // }
+  // }
+
+  //   // If it's not a valid ObjectId, try finding by orderId
+  order = await Order.findOne({ orderId: context.query.id });
+  // }
+
+  if (!order) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      order: JSON.parse(JSON.stringify(order)),
+    },
+  };
+  // } catch (error) {
+  //   console.error("Error fetching order:", error);
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
+}
+
+export default Myorder;

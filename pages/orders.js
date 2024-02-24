@@ -86,6 +86,7 @@ export async function getServerSideProps(context) {
     await mongoose.connect(process.env.MONGODB_URI);
   }
   let orders = await Order.find({});
+  orders = JSON.parse(JSON.stringify(orders));
 
   return {
     props: {
