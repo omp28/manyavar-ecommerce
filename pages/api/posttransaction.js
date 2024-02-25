@@ -8,7 +8,7 @@ const handler = async (req, res) => {
   if (req.body.STATUS === "TXN_SUCCESS") {
     let order = await Order.findOneAndUpdate(
       { orderId: req.body.oid },
-      { status: "paid", paymentInfo: Json.stringify(req.body) }
+      { status: "paid", paymentInfo: JSON.stringify(req.body) }
     );
   } else if (req.body.STATUS == "PENDING") {
     let order = await Order.findOneAndUpdate(

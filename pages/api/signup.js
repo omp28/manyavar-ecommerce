@@ -8,7 +8,7 @@ const handler = async (req, res) => {
     let u = new User({
       name,
       email,
-      password: CryptoJS.AES.encrypt(req.body.password, "secret123").toString(),
+      password: CryptoJS.AES.encrypt(req.body.password, "123456").toString(),
     });
     await u.save();
     res.status(200).json({ message: "Success !" });

@@ -8,8 +8,26 @@ const orders = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const headers = new Headers();
+        headers.append("Authorization", `Bearer ${token}`); // Add token to header
+
+        let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/myorders`, {
+          method: "POST",
+          headers: headers, // Use the headers object
+        });
+        let res = await a.json();
+        console.log(res);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
     if (!localStorage.getItem("token")) {
       router.push("/");
+    } else {
+      fetchOrders();
     }
   }, []);
 
@@ -80,17 +98,3 @@ const orders = () => {
 };
 
 export default orders;
-
-export async function getServerSideProps(context) {
-  if (!mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGODB_URI);
-  }
-  let orders = await Order.find({});
-  orders = JSON.parse(JSON.stringify(orders));
-
-  return {
-    props: {
-      orders: orders,
-    },
-  };
-}
