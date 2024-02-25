@@ -1,6 +1,4 @@
 import React from "react";
-import mongoose from "mongoose";
-import Order from "../models/Order";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -9,20 +7,17 @@ const orders = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const headers = new Headers();
-        headers.append("Authorization", `Bearer ${token}`); // Add token to header
-
-        let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/myorders`, {
-          method: "POST",
-          headers: headers, // Use the headers object
-        });
-        let res = await a.json();
-        console.log(res);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
+      let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/myorders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: localStorage.getItem("token"),
+        }),
+      });
+      let res = await a.json();
+      console.log(res);
     };
     if (!localStorage.getItem("token")) {
       router.push("/");
