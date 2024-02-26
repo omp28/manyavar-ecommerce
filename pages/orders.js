@@ -1,10 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { set } from "mongoose";
+import { Link } from "react-router-dom";
 
 const orders = () => {
   const router = useRouter();
-
+  const [orders, setOrders] = React.useState([]);
   useEffect(() => {
     const fetchOrders = async () => {
       let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/myorders`, {
@@ -17,6 +19,8 @@ const orders = () => {
         }),
       });
       let res = await a.json();
+      setOrders(res.orders);
+
       console.log(res);
     };
     if (!localStorage.getItem("token")) {
@@ -25,7 +29,7 @@ const orders = () => {
       fetchOrders();
     }
   }, []);
-
+  console.log("Orders:--->>>", orders);
   return (
     <div>
       <div className="mx-auto">
@@ -36,53 +40,38 @@ const orders = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Product name
+                    OrderId
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Color
+                    Email
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    Category
-                  </th>
+
                   <th scope="col" className="px-6 py-3">
                     Price
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Payment Status
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    Apple MacBook Pro 17"
-                  </th>
-                  <td className="px-6 py-4">Silver</td>
-                  <td className="px-6 py-4">Laptop</td>
-                  <td className="px-6 py-4">₹2999</td>
-                </tr>
-                <tr className="bg-white border-b">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    Microsoft Surface Pro
-                  </th>
-                  <td className="px-6 py-4">White</td>
-                  <td className="px-6 py-4">Laptop PC</td>
-                  <td className="px-6 py-4">₹1999</td>
-                </tr>
-                <tr className="bg-white">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    Magic Mouse 2
-                  </th>
-                  <td className="px-6 py-4">Black</td>
-                  <td className="px-6 py-4">Accessories</td>
-                  <td className="px-6 py-4">₹99</td>
-                </tr>
+                {orders.map((item) => {
+                  return (
+                    <tr key={item._id} className="bg-white border-b">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                      >
+                        {item._id}
+                      </th>
+                      <td className="px-6 py-4">{item.email}</td>
+                      <td className="px-6 py-4">₹{item.amount}</td>
+                      <td className="px-6 py-4 underline ">
+                        <a href={`/order?id=` + item.orderId}>Details</a>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

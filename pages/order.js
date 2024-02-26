@@ -23,11 +23,14 @@ const Myorder = ({ order }) => {
               ORDER ID : {order.orderId}
             </h1>
             <h1 className=" text-sm my-4 ">
-              Your order has been successfully pladced. Your payment status is{" "}
-              <span className="  font-bold text-xl capitalize">
-                {" "}
-                {order.status}
-              </span>
+              <p>Your order has been successfully pladced. </p>
+              <p>
+                Your payment status is
+                <span className=" px-1 underline font-bold text-l capitalize">
+                  {" "}
+                  {order.status}
+                </span>
+              </p>
             </h1>
             <div className="grid grid-cols-5 gap-4 mb-4 items-center">
               <div className="text-center border-t border-b border-gray-300 py-2 text-lg font-bold">

@@ -9,14 +9,13 @@ const handler = async (req, res) => {
   console.log("Secret:--->>>", process.env.JWT_SECRET);
 
   try {
-    console.log("above");
     // const data = jsonwebtoken.verify(token, process.env.JWT_SECRET);
     const data = jsonwebtoken.verify(token, process.env.JWT_SECRET, {});
 
     console.log("Decoded Token:", data);
 
     let orders = await Order.find({ email: data.email });
-    res.status(200).json({ name: "John Doe" });
+    res.status(200).json({ orders });
   } catch (error) {
     console.error("JWT Verification Error:", error.message);
     res.status(401).json({ error: "Invalid token" });
