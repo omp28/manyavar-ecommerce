@@ -17,7 +17,7 @@ export default function Post({ buyNow, addToCart, product, variants }) {
   const checkPincodeService = async () => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinJson = await pins.json();
-    if (pinJson.includes(parseInt(pin))) {
+    if (Object.keys(pinJson).includes(pin)) {
       setService(true);
       toast.success("Your Pincode is SERVICABLE", {
         position: "bottom-center",

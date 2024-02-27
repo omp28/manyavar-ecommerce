@@ -33,11 +33,11 @@ const orders = () => {
   return (
     <div>
       <div className="mx-auto">
-        <h1 className="text-center">My Orders</h1>
+        <h1 className="text-center my-4">My Orders</h1>
         <div className="items">
-          <div className="relative overflow-x-auto">
-            <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <div className="relative overflow-x-auto ">
+            <table className="w-full text-sm text-center ">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     OrderId
@@ -45,9 +45,8 @@ const orders = () => {
                   <th scope="col" className="px-6 py-3">
                     Email
                   </th>
-
                   <th scope="col" className="px-6 py-3">
-                    Price
+                    Amount
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Payment Status

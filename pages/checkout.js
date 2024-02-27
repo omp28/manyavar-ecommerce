@@ -18,13 +18,27 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
   const [email, setEmail] = useState("");
   const [disabled, setDisabled] = useState(true);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     if (e.target.name === "name") {
       setName(e.target.value);
     } else if (e.target.name === "address") {
       setAddress(e.target.value);
     } else if (e.target.name === "zip") {
       setZip(e.target.value);
+      if (e.target.value.length === 6) {
+        let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+        let pinJson = await pins.json();
+        if (Object.keys(pinJson).includes(e.target.value)) {
+          setCity(pinJson[e.target.value][0]);
+          setState(pinJson[e.target.value][1]);
+        } else {
+          setCity("");
+          setState("");
+        }
+      } else {
+        setCity("");
+        setState("");
+      }
     } else if (e.target.name === "phone") {
       setPhone(e.target.value);
     } else if (e.target.name === "email") {
@@ -59,6 +73,8 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
       variant: cart[k].variant,
     }));
 
+    console.log("orderId:--->>>>", oid);
+
     // get transaction token
     const data = {
       cart: productsArray,
@@ -71,58 +87,50 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
       phone,
     };
 
-    async function postJSON(data) {
-      try {
-        let a = await fetch(
-          `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        let txnToken = await a.json();
-        console.log(txnToken);
-        // Call the next steps after obtaining the token
-      } catch (error) {
-        console.error("Error in postJSON:", error);
-      }
-    }
-
-    // Call the postJSON function to get the transaction token
-    await postJSON(data);
-
-    var config = {
-      root: "",
-      flow: "DEFAULT",
-      data: {
-        orderId: oid,
-        token: txnToken,
-        tokenType: "TXN_TOKEN",
-        amount: subTotal,
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      handler: {
-        notifyMerchant: function (eventName, data) {
-          console.log("notifyMerchant handler function called");
-          console.log("eventName => ", eventName);
-          console.log("data => ", data);
+      body: JSON.stringify(data),
+    });
+    let txnRes = await a.json();
+    if (txnRes.success) {
+      txnToken = txnRes.txnToken;
+      console.log(txnToken);
+
+      var config = {
+        root: "",
+        flow: "DEFAULT",
+        data: {
+          orderId: oid,
+          token: txnToken,
+          tokenType: "TXN_TOKEN",
+          amount: subTotal,
         },
-      },
-    };
+        handler: {
+          notifyMerchant: function (eventName, data) {
+            console.log("notifyMerchant handler function called");
+            console.log("eventName => ", eventName);
+            console.log("data => ", data);
+          },
+        },
+      };
 
-    // initialze configuration using init method
-    console.log("window.Paytm:", window.Paytm);
+      // initialze configuration using init method
+      console.log("window.Paytm:", window.Paytm);
 
-    window.Paytm.CheckoutJS.init(config)
-      .then(function onSuccess() {
-        // after successfully updating configuration, invoke JS Checkout
-        window.Paytm.CheckoutJS.invoke();
-      })
-      .catch(function onError(error) {
-        console.log("error => ", error);
-      });
+      window.Paytm.CheckoutJS.init(config)
+        .then(function onSuccess() {
+          // after successfully updating configuration, invoke JS Checkout
+          window.Paytm.CheckoutJS.invoke();
+        })
+        .catch(function onError(error) {
+          console.log("error => ", error);
+        });
+    } else {
+      console.log("Transaction Token not generated :" + txnRes.error);
+    }
   };
 
   return (
@@ -161,7 +169,6 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
             name="address"
           />
           <input
-            readOnly={true}
             onChange={handleChange}
             value={city}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
@@ -170,7 +177,6 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
             name="city"
           />
           <input
-            readOnly={true}
             onChange={handleChange}
             value={state}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"

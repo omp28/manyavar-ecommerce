@@ -2,11 +2,9 @@ const https = require("https");
 const PaytmChecksum = require("PaytmChecksum");
 import connectDB from "../../middleware/mongoose";
 import Order from "../../models/Order";
-
+import Products from "../../models/Products";
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    // initialte an order corressponding to this order id
-
     let order = new Order({
       email: req.body.email,
       orderId: req.body.oid,
@@ -17,7 +15,28 @@ const handler = async (req, res) => {
 
     await order.save();
 
-    // check if cart is tempered
+    // Check if cart is tempered
+    let product;
+    let sumTotal = 0;
+    let cart = req.body.cart;
+    for (let item in cart) {
+      sumTotal += cart[item].price * cart[item].qty;
+      product = await Products.findOne({ slug: item });
+      console.log("product:--->>>> ", product);
+      if (!product || product.price !== cart[item].price) {
+        res
+          .status(200)
+          .json({ success: false, error: "Price of some items has changed" });
+        return;
+      }
+    }
+
+    // Find the product in the database using the productID
+
+    if (sumTotal !== req.body.subTotal) {
+      res.status(400).json({ success: false, error: "Cart is tampered" });
+      return;
+    }
 
     // check if cart items is out of stock
 
@@ -65,7 +84,7 @@ const handler = async (req, res) => {
           path: `/theia/api/v1/initiateTransaction?mid=${process.env.NEXT_PUBLIC_PAYTM_MID}&orderId=ORDERID_98765`, // Used process.env.PAYTM_MID
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/JSON",
             "Content-Length": post_data.length,
           },
         };
@@ -77,8 +96,9 @@ const handler = async (req, res) => {
           });
 
           post_res.on("end", function () {
-            console.log("Response: ", response);
-            resolve(response);
+            let ress = JSON.parse(response).body;
+            res.sucess = true;
+            resolve(ress);
           });
         });
 
@@ -88,7 +108,7 @@ const handler = async (req, res) => {
     };
 
     // Call the requestAsync function
-    //   const responseData = await requestAsync();
+    const responseData = await requestAsync();
     //   console.log("responseData: ", responseData);
 
     let myr = await requestAsync();
