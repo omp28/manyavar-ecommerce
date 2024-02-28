@@ -19,7 +19,7 @@ const OrderSchema = new mongoose.Schema(
     amount: { type: Number, required: true },
     status: { type: String, default: "Initiated", required: true },
   },
-  { timeStamp: true }
+  { timeStamps: true }
 );
 
 mongoose.models = {};

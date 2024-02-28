@@ -97,10 +97,15 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       body: JSON.stringify(data),
     });
     let txnRes = await a.json();
+    console.log(
+      "this is the transaction resolution token messagen txnRes:--->>> ",
+      txnRes
+    );
+
     if (txnRes.success) {
       // // commenting paytm script for now
-      // txnToken = txnRes.txnToken;
-      // console.log(txnToken);
+      txnToken = txnRes.txnToken;
+      console.log("this is the token ::>>", txnToken);
 
       // var config = {
       //   root: "",

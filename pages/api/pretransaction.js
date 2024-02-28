@@ -3,6 +3,7 @@ const PaytmChecksum = require("PaytmChecksum");
 import connectDB from "../../middleware/mongoose";
 import Order from "../../models/Order";
 import Products from "../../models/Products";
+
 const handler = async (req, res) => {
   if (req.method === "POST") {
     let order = new Order({
@@ -19,16 +20,16 @@ const handler = async (req, res) => {
     let product;
     let sumTotal = 0;
     let cart = req.body.cart;
-    console.log("cart:--->>>this is cart ---->>> ", cart);
+    // console.log("cart:--->>>this is cart ---->>> ", cart);
     for (let item of cart) {
       // sumTotal += item.price * item.quantity;
       sumTotal += (item.price * item.quantity).toFixed(2);
       const product = await Products.findOne({ slug: item.productId });
 
-      console.log("product:--->>>> ", product);
+      // console.log("product:--->>>> ", product);
 
-      console.log("product availableQTY:--->>>> ", product.availableQty);
-      console.log("item quantity:--->>>> ", item.quantity);
+      // console.log("product availableQTY:--->>>> ", product.availableQty);
+      // console.log("item quantity:--->>>> ", item.quantity);
       // check if product is available in the database OUTOFSTOCK
       if (product.availableQty < item.quantity) {
         res
@@ -55,6 +56,39 @@ const handler = async (req, res) => {
       res.status(400).json({ success: false, error: "Cart is tampered" });
       return;
     }
+    // ------------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> manual
+    const protocol = req.headers["x-forwarded-proto"] || "http";
+    const host = req.headers["x-forwarded-host"] || req.headers["host"];
+    const origin = `${protocol}://${host}`;
+
+    console.log("you are in   ", req.body);
+    console.log("you are in done");
+    const manualTransactionResponse = await fetch(
+      `${origin}/api/manual-transaction`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: req.body.oid,
+          status: req.body.status,
+          oid: req.body.oid,
+          subTotal: req.body.subTotal,
+          cart: req.body.cart,
+          email: req.body.email,
+          address: req.body.address,
+          // Add any other necessary information...
+        }),
+      }
+    );
+
+    const manualTransactionResult = await manualTransactionResponse.json();
+    console.log("manualTransactionResult:--->>> ", manualTransactionResult);
+    // console.log(
+    //   "you are in manualk transaction req.body.STATUS:--->>> ",
+    //   req.body.STATUS
+    // );
 
     // check if details are correct
 
