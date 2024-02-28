@@ -27,6 +27,16 @@ const handler = async (req, res) => {
 
       console.log("product:--->>>> ", product);
 
+      console.log("product availableQTY:--->>>> ", product.availableQty);
+      console.log("item quantity:--->>>> ", item.quantity);
+      // check if product is available in the database OUTOFSTOCK
+      if (product.availableQty < item.quantity) {
+        res
+          .status(200)
+          .json({ success: false, error: "Product is out of stock" });
+        return;
+      }
+
       if (product.price != item.price) {
         res
           .status(200)

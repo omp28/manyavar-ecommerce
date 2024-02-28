@@ -8,6 +8,8 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import Link from "next/link";
 import Head from "next/head";
 import Script from "next/script";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -130,14 +132,49 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       //     console.log("error => ", error);
       //   });
       console.log("Transaction Token generated ");
+      toast.success("SUCCESS  ", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } else {
       clearCart(); // clear cart when transaction token is not generated due to temporing
       console.log("Transaction Token not generated :" + txnRes.error);
+      toast.error(txnRes.error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
   return (
     <div className=" bg-custom-skin">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar="false"
+        newestOnTop="false"
+        closeOnClick
+        rtl="false"
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <ToastContainer />
       <Head>
         <meta
           name="viewport"
