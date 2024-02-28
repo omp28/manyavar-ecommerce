@@ -8,7 +8,7 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import Link from "next/link";
 import Head from "next/head";
 import Script from "next/script";
-const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
+const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -96,39 +96,42 @@ const checkout = ({ cart, addToCart, removeFromCart, subTotal }) => {
     });
     let txnRes = await a.json();
     if (txnRes.success) {
-      txnToken = txnRes.txnToken;
-      console.log(txnToken);
+      // // commenting paytm script for now
+      // txnToken = txnRes.txnToken;
+      // console.log(txnToken);
 
-      var config = {
-        root: "",
-        flow: "DEFAULT",
-        data: {
-          orderId: oid,
-          token: txnToken,
-          tokenType: "TXN_TOKEN",
-          amount: subTotal,
-        },
-        handler: {
-          notifyMerchant: function (eventName, data) {
-            console.log("notifyMerchant handler function called");
-            console.log("eventName => ", eventName);
-            console.log("data => ", data);
-          },
-        },
-      };
+      // var config = {
+      //   root: "",
+      //   flow: "DEFAULT",
+      //   data: {
+      //     orderId: oid,
+      //     token: txnToken,
+      //     tokenType: "TXN_TOKEN",
+      //     amount: subTotal,
+      //   },
+      //   handler: {
+      //     notifyMerchant: function (eventName, data) {
+      //       console.log("notifyMerchant handler function called");
+      //       console.log("eventName => ", eventName);
+      //       console.log("data => ", data);
+      //     },
+      //   },
+      // };
 
-      // initialze configuration using init method
-      console.log("window.Paytm:", window.Paytm);
+      // // initialze configuration using init method
+      // console.log("window.Paytm:", window.Paytm);
 
-      window.Paytm.CheckoutJS.init(config)
-        .then(function onSuccess() {
-          // after successfully updating configuration, invoke JS Checkout
-          window.Paytm.CheckoutJS.invoke();
-        })
-        .catch(function onError(error) {
-          console.log("error => ", error);
-        });
+      // window.Paytm.CheckoutJS.init(config)
+      //   .then(function onSuccess() {
+      //     // after successfully updating configuration, invoke JS Checkout
+      //     window.Paytm.CheckoutJS.invoke();
+      //   })
+      //   .catch(function onError(error) {
+      //     console.log("error => ", error);
+      //   });
+      console.log("Transaction Token generated ");
     } else {
+      clearCart(); // clear cart when transaction token is not generated due to temporing
       console.log("Transaction Token not generated :" + txnRes.error);
     }
   };
