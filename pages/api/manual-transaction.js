@@ -1,3 +1,4 @@
+import { redirect } from "next/dist/server/api-utils";
 import connectDB from "../../middleware/mongoose";
 import Order from "../../models/Order";
 import Products from "../../models/Products";
@@ -5,10 +6,6 @@ import Products from "../../models/Products";
 const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
-      console.log(
-        "Request Body from manual transaction ---:---->>>>",
-        req.body
-      );
       let cart = req.body.cart;
       let serverSideSubTotal = 0;
       for (let item of cart) {
@@ -68,10 +65,12 @@ const handler = async (req, res) => {
           { $inc: { availableQty: -item.quantity } }
         );
       }
-
-      res
-        .status(200)
-        .json({ success: true, message: "Order saved, pending payment" });
+      console.log("order from manual transaction:--->>> ", order);
+      res.status(200).json({
+        success: true,
+        oid: order._id,
+        message: "Order saved, pending payment",
+      });
     } catch (error) {
       console.error("Error processing manual transaction:", error);
       res.status(500).json({ success: false, error: "Internal server error." });

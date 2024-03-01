@@ -8,7 +8,7 @@ const handler = async (req, res) => {
   // validate status into orders table after checking the transaction status
 
   console.log("hello this is req.body:--->>> ", req.body.status);
-  if (req.body.status === "TXN_SUCCESS") {
+  if (req.body.success) {
     order = await Order.findOneAndUpdate(
       { orderId: req.body.oid },
       { status: "paid", paymentInfo: JSON.stringify(req.body) }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { IoIosHeart } from "react-icons/io";
 import { MdAccountCircle } from "react-icons/md";
@@ -10,6 +10,7 @@ import Head from "next/head";
 import Script from "next/script";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -19,6 +20,16 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [user, setUser] = useState({ value: null });
+  const router = useRouter();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("myuser"));
+    if (user.token) {
+      setUser(user);
+      setEmail(user.email);
+    }
+  }, []);
 
   const handleChange = async (e) => {
     if (e.target.name === "name") {
@@ -102,6 +113,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
         "Transaction Initiation Success:------>>>>>>",
         txnRes.success
       );
+      clearCart();
       toast.success("SUCCESS !", {
         position: "top-right",
         autoClose: 5000,
@@ -113,6 +125,8 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
         theme: "light",
         transition: Bounce,
       });
+      // console.log("txnRes.oid from checkout", txnRes.oid);
+      window.location.href = `/order?id=${txnRes.oid}`; // Force redirection
     } else {
       console.log("Transaction Initiation Error:", txnRes.error);
       toast.error(txnRes.error, {
@@ -163,13 +177,49 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
             placeholder="Name"
             name="name"
           />
+          {/* email */}
+          {user && user.value ? (
+            <input
+              readOnly
+              value={user.email}
+              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+              type="email"
+              placeholder="Email"
+              name="email"
+            />
+          ) : (
+            <input
+              onChange={handleChange}
+              value={email}
+              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+              type="email"
+              placeholder="Email"
+              name="email"
+            />
+          )}
+          <input
+            onChange={handleChange}
+            value={phone}
+            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+            type="number"
+            placeholder="Phone Number"
+            name="phone"
+          />
           <input
             onChange={handleChange}
             value={address}
             className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
             type="text"
-            placeholder="Address"
+            placeholder="Address Line"
             name="address"
+          />
+          <input
+            value={zip}
+            onChange={handleChange}
+            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+            type="number"
+            placeholder="Zip Code"
+            name="zip"
           />
           <input
             onChange={handleChange}
@@ -186,30 +236,6 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
             type="text"
             placeholder="State"
             name="state"
-          />
-          <input
-            value={zip}
-            onChange={handleChange}
-            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-            type="number"
-            placeholder="Zip Code"
-            name="zip"
-          />
-          <input
-            onChange={handleChange}
-            value={phone}
-            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-            type="number"
-            placeholder="Phone Number"
-            name="phone"
-          />
-          <input
-            onChange={handleChange}
-            value={email}
-            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-            type="text"
-            placeholder="Email"
-            name="email"
           />
         </div>
         <div className="flex mt-4 justify-center items-center">
