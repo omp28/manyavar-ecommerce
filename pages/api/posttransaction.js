@@ -5,7 +5,6 @@ import Products from "../../models/Products";
 
 const handler = async (req, res) => {
   let order;
-  // validate paytm checksum
   // validate status into orders table after checking the transaction status
 
   console.log("hello this is req.body:--->>> ", req.body.status);
@@ -33,8 +32,9 @@ const handler = async (req, res) => {
 
   // initiate shipping
   // redirect to order confirmation page
-  // res.redirect(`/order?id=` + order._id, 200);
+  // res.redirect(`/order?id=` + order._id, 200),
   res
+
     .status(200)
     .json({ success: true, message: "Order successfully marked as paid." });
 };

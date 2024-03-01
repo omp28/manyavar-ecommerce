@@ -47,7 +47,6 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       setEmail(e.target.value);
     }
 
-    // console.log(name, address, city, state, zip, phone, email);
     setTimeout(() => {
       if (
         name.length > 3 &&
@@ -62,10 +61,6 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   };
 
   const initiatePayment = async () => {
-    let txnToken;
-    let oid = Math.floor(Math.random() * Date.now());
-
-    // Create an array to store detailed product information
     const productsArray = Object.keys(cart).map((k) => ({
       productId: k,
       quantity: cart[k].qty,
@@ -75,9 +70,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       variant: cart[k].variant,
     }));
 
-    console.log("orderId:--->>>>", oid);
-
-    // get transaction token
+    let oid = Math.floor(Math.random() * Date.now());
     const data = {
       cart: productsArray,
       subTotal,
@@ -89,55 +82,27 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       phone,
     };
 
-    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    let txnRes = await a.json();
-    console.log(
-      "this is the transaction resolution token messagen txnRes:--->>> ",
-      txnRes
+    // Directly call the manual transaction api
+    let a = await fetch(
+      `${process.env.NEXT_PUBLIC_HOST}/api/manual-transaction`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
     );
+    let txnRes = await a.json();
 
+    // Handle success or failure:
     if (txnRes.success) {
-      // // commenting paytm script for now
-      txnToken = txnRes.txnToken;
-      console.log("this is the token ::>>", txnToken);
-
-      // var config = {
-      //   root: "",
-      //   flow: "DEFAULT",
-      //   data: {
-      //     orderId: oid,
-      //     token: txnToken,
-      //     tokenType: "TXN_TOKEN",
-      //     amount: subTotal,
-      //   },
-      //   handler: {
-      //     notifyMerchant: function (eventName, data) {
-      //       console.log("notifyMerchant handler function called");
-      //       console.log("eventName => ", eventName);
-      //       console.log("data => ", data);
-      //     },
-      //   },
-      // };
-
-      // // initialze configuration using init method
-      // console.log("window.Paytm:", window.Paytm);
-
-      // window.Paytm.CheckoutJS.init(config)
-      //   .then(function onSuccess() {
-      //     // after successfully updating configuration, invoke JS Checkout
-      //     window.Paytm.CheckoutJS.invoke();
-      //   })
-      //   .catch(function onError(error) {
-      //     console.log("error => ", error);
-      //   });
-      console.log("Transaction Token generated ");
-      toast.success("SUCCESS  ", {
+      console.log("Manual transaction initiated");
+      console.log(
+        "Transaction Initiation Success:------>>>>>>",
+        txnRes.success
+      );
+      toast.success("SUCCESS !", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -149,8 +114,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
         transition: Bounce,
       });
     } else {
-      clearCart(); // clear cart when transaction token is not generated due to temporing
-      console.log("Transaction Token not generated :" + txnRes.error);
+      console.log("Transaction Initiation Error:", txnRes.error);
       toast.error(txnRes.error, {
         position: "top-right",
         autoClose: 5000,
@@ -186,12 +150,6 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
           content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
         />
       </Head>
-      {/* <Script
-        type="application/javascript"
-        crossorigin="anonymous"
-        src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgui/checoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}
-        onLoad="onScriptLoad()"
-      ></Script> */}
 
       <h1 className=" font-bold text-2xl text-center py-8">Checkout</h1>
       <h2 className=" text-center ">Delivery Details</h2>
@@ -263,7 +221,6 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
         <div className="  flex justify-center items-center  ">
           <div className="  w-full md:w-1/2 m:w-full  flex-col sidebar  bg-custom-skin py-10   justify-evenly    ">
             <ol>
-              {/* first list */}
               {Object.keys(cart).length === 0 && (
                 <div>
                   <h1>Cart is EMPTY !</h1>
