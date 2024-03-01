@@ -22,9 +22,6 @@ const Nav = ({
   const [dropdown, setDropdown] = useState(false);
 
   const ref = useRef();
-  // console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
-  // console.log("cart value hello");
-  // console.log(cart);
   const toggleCart = ({}) => {
     if (ref.current.classList.contains("hidden")) {
       ref.current.classList.remove("hidden");
@@ -79,12 +76,6 @@ const Nav = ({
                   onClick={() => {
                     setDropdown(!dropdown);
                   }}
-                  // onMouseOver={() => {
-                  //   setDropdown(true);
-                  // }}
-                  // onMouseLeave={() => {
-                  //   setDropdown(false);
-                  // }}
                 >
                   {dropdown && (
                     <div className="absolute right-52 text-white top-28 bg-custom-bg-footer rounded-md w-28 leading-8 text-sm z-10">

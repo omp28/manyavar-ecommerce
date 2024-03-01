@@ -60,10 +60,10 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
 
     setTimeout(() => {
       if (
-        name.length > 3 &&
+        name.length > 2 &&
         address.length > 3 &&
-        zip.length > 3 &&
-        phone.length > 3 &&
+        zip.length >= 6 &&
+        phone.length >= 10 &&
         email.length > 3
       ) {
         setDisabled(false);

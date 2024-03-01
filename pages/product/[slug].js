@@ -1,18 +1,25 @@
 //[slug].js
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useState } from "react";
+import { use, useState } from "react";
 import mongoose from "mongoose";
 import Product from "../../models/Products";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 export default function Post({ buyNow, addToCart, product, variants }) {
-  // console.log(product, variants);
   const router = useRouter();
   const { slug } = router.query;
   const [pin, setPin] = useState();
   const [service, setService] = useState();
+  const [color, setColor] = useState(product.color);
+  const [size, setSize] = useState(product.size);
+
+  useEffect(() => {
+    setColor(product.color);
+    setSize(product.size);
+  }, [router.query]);
 
   const checkPincodeService = async () => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
@@ -50,11 +57,9 @@ export default function Post({ buyNow, addToCart, product, variants }) {
     setPin(e.target.value);
   };
 
-  const [color, setColor] = useState(product.color);
-  const [size, setSize] = useState(product.size);
   const refereshVariant = (newSize, newColor) => {
     let url = `${process.env.NEXT_PUBLIC_HOST}/product/${variants[newColor][newSize]["slug"]}`;
-    window.location = url;
+    router.push(url);
   };
 
   return (
