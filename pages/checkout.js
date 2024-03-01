@@ -174,15 +174,14 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
             placeholder="Name"
             name="name"
           />
-          {/* email */}
           {user && user.value ? (
             <input
-              readOnly
               value={user.email}
-              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2 text-gray-300 "
               type="email"
-              placeholder="Email"
+              placeholder="Email "
               name="email"
+              readOnly
             />
           ) : (
             <input

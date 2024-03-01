@@ -212,14 +212,18 @@ const Nav = ({
                 <span className=" w-1/3  ">subTotal : ₹{subTotal}</span>
                 {/* checkout */}
                 <Link href="/checkout">
-                  <button className=" my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg">
+                  <button
+                    disabled={Object.keys(cart).length === 0}
+                    className=" disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
+                  >
                     <IoBagCheckOutline size={20} /> CheckOut
                   </button>
                 </Link>
 
                 <button
+                  disabled={Object.keys(cart).length === 0}
                   onClick={clearCart}
-                  className="my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
+                  className="disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
                 >
                   Clear Cart
                 </button>

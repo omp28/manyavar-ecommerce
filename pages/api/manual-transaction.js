@@ -8,6 +8,13 @@ const handler = async (req, res) => {
     try {
       let cart = req.body.cart;
       let serverSideSubTotal = 0;
+      if (req.body.subTotal <= 0) {
+        res.status(400).json({
+          success: false,
+          error: "Invalid subTotal ,Please Build your Cart",
+        });
+        return;
+      }
       for (let item of cart) {
         const product = await Products.findOne({ slug: item.productId });
         if (
@@ -44,6 +51,16 @@ const handler = async (req, res) => {
           success: false,
           error: "Order not possible: Product out of stock",
         });
+        return;
+      }
+      const pincode_length = req.body.zip.length;
+      const phone_length = req.body.phone.length;
+      if (phone_length != 10) {
+        res.status(400).json({ success: false, error: "Invalid phone number" });
+        return;
+      }
+      if (pincode_length != 6) {
+        res.status(400).json({ success: false, error: "Invalid pincode" });
         return;
       }
 
