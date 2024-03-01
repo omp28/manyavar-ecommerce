@@ -65,10 +65,9 @@ const handler = async (req, res) => {
           { $inc: { availableQty: -item.quantity } }
         );
       }
-      console.log("order from manual transaction:--->>> ", order);
       res.status(200).json({
         success: true,
-        oid: order._id,
+        oid: req.body.oid,
         message: "Order saved, pending payment",
       });
     } catch (error) {

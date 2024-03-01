@@ -15,15 +15,12 @@ const orders = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: JSON.parse(localStorage.getItem("myuser")).token, // Assuming your token is stored within the myuser object
+          token: JSON.parse(localStorage.getItem("myuser")).token,
         }),
       });
 
       let res = await a.json();
-      console.log("res:--->>>", res);
       setOrders(res.orders);
-
-      console.log(res);
     };
     if (
       !localStorage.getItem("myuser") ||
@@ -34,7 +31,6 @@ const orders = () => {
       fetchOrders();
     }
   }, []);
-  console.log("Orders:--->>>", orders);
   return (
     <div>
       <div className="mx-auto">

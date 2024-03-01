@@ -109,10 +109,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
     // Handle success or failure:
     if (txnRes.success) {
       console.log("Manual transaction initiated");
-      console.log(
-        "Transaction Initiation Success:------>>>>>>",
-        txnRes.success
-      );
+      console.log("Transaction Initiation Success", txnRes.success);
       clearCart();
       toast.success("SUCCESS !", {
         position: "top-right",

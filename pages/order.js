@@ -8,7 +8,6 @@ const Myorder = ({ order }) => {
   // if (!order) {
   //   return <div className=" text-center my-4">Order not found</div>;
   // }
-  console.log("this are the order.prodct--->>>", order.products);
   const products = order.products;
 
   return (
