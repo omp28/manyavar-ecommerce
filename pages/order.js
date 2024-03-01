@@ -8,7 +8,7 @@ const Myorder = ({ order }) => {
   // if (!order) {
   //   return <div className=" text-center my-4">Order not found</div>;
   // }
-  console.log(order.products);
+  console.log("this are the order.prodct--->>>", order.products);
   const products = order.products;
 
   return (
@@ -53,6 +53,7 @@ const Myorder = ({ order }) => {
                 className="grid grid-cols-5 gap-4 border-t border-gray-200 py-2 items-center"
               >
                 <div className="text-gray-500">{products[key].name}</div>
+
                 <div className="text-gray-900">{products[key].quantity}</div>
                 <div className="text-gray-900">{products[key].size}</div>
                 <div className="text-gray-900">{products[key].price}</div>

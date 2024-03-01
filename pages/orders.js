@@ -15,15 +15,20 @@ const orders = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: localStorage.getItem("token"),
+          token: JSON.parse(localStorage.getItem("myuser")).token, // Assuming your token is stored within the myuser object
         }),
       });
+
       let res = await a.json();
+      console.log("res:--->>>", res);
       setOrders(res.orders);
 
       console.log(res);
     };
-    if (!localStorage.getItem("token")) {
+    if (
+      !localStorage.getItem("myuser") ||
+      !JSON.parse(localStorage.getItem("myuser")).token
+    ) {
       router.push("/");
     } else {
       fetchOrders();
@@ -49,7 +54,7 @@ const orders = () => {
                     Amount
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Payment Status
+                    Order Details
                   </th>
                 </tr>
               </thead>

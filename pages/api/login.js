@@ -17,7 +17,7 @@ const handler = async (req, res) => {
           { message: "Success !", email: user.email, name: user.name },
           "123456"
         );
-        res.status(200).json({ success: true, token });
+        res.status(200).json({ success: true, token, email: user.email });
       } else {
         res.status(400).json({ message: "Invalid credentials !" });
       }
