@@ -27,9 +27,11 @@ const Nav = ({
   const router = useRouter();
 
   const toggleCart = ({}) => {
-    if (ref.current?.classList.contains("hidden")) {
-      ref.current?.classList.remove("hidden");
-      ref.current?.classList.add("translate-x-0");
+    const cartSidebar = ref.current; // Get the element
+    if (cartSidebar) {
+      // Safety check
+      cartSidebar.classList.toggle("hidden");
+      cartSidebar.classList.toggle("translate-x-0");
     } else if (!ref.current?.classList.contains("hidden")) {
       ref.current?.classList.remove("translate-x-0");
       ref.current?.classList.add("hidden");
@@ -43,13 +45,15 @@ const Nav = ({
     } else {
       setIsSidebarVisible(true);
     }
-
-    if (Object.keys(cart).length > 0) {
-      ref.current.classList.remove("hidden");
-      ref.current.classList.add("translate-x-0");
-    } else {
-      ref.current.classList.remove("translate-x-0");
-      ref.current.classList.add("hidden");
+    const cartSidebar = ref.current;
+    if (cartSidebar) {
+      if (Object.keys(cart).length > 0) {
+        ref.current.classList.remove("hidden");
+        ref.current.classList.add("translate-x-0");
+      } else {
+        ref.current.classList.remove("translate-x-0");
+        ref.current.classList.add("hidden");
+      }
     }
   }, [cart]);
   return (

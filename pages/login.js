@@ -35,8 +35,7 @@ const login = () => {
     });
 
     let response = await res.json();
-    console.log("response from login api:");
-    console.log(response);
+    console.log("response from login api:", response);
 
     setEmail("");
     setPassword("");

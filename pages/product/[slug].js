@@ -20,7 +20,6 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
 
   useEffect(() => {
     if (!error) {
-      console.log("produc quan", product.availableQty);
       setColor(product.color);
       setSize(product.size);
     }
@@ -32,7 +31,7 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
     if (Object.keys(pinJson).includes(pin)) {
       setService(true);
       toast.success("Your Pincode is SERVICABLE", {
-        position: "bottom-center",
+        // position: "bottom-center",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -74,7 +73,7 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
     <>
       <section className="text-gray-600 body-font overflow-hidden">
         <ToastContainer
-          position="bottom-center"
+          // position="bottom-center"
           autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}

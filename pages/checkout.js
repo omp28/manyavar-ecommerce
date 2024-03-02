@@ -11,6 +11,7 @@ import Script from "next/script";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
+import payment from "../components/payment";
 const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -24,11 +25,16 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   const router = useRouter();
 
   useEffect(() => {
+    let isMounted = true;
+
     const user = JSON.parse(localStorage.getItem("myuser"));
     if (user.token) {
       setUser(user);
       setEmail(user.email);
     }
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleChange = async (e) => {
@@ -71,7 +77,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
     }, 100);
   };
 
-  const initiatePayment = async () => {
+  const initiatePayment = async (isMounted) => {
     const productsArray = Object.keys(cart).map((k) => ({
       productId: k,
       quantity: cart[k].qty,
@@ -93,57 +99,70 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       phone,
     };
 
-    // Directly call the manual transaction api
-    let a = await fetch(
-      `${process.env.NEXT_PUBLIC_HOST}/api/manual-transaction`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    // Directly call the pre transaction api
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
     let txnRes = await a.json();
+    if (isMounted) {
+      // Payment Successful, call postTransaction
+      if (txnRes.paymentStatus === "success") {
+        let post = await fetch(
+          `${process.env.NEXT_PUBLIC_HOST}/api/posttransaction`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              cart: productsArray,
+              oid: txnRes.oid,
+              paymentStatus: "success",
+            }),
+          }
+        );
+        let postTxnRes = await post.json();
 
-    // Handle success or failure:
-    if (txnRes.success) {
-      console.log("Manual transaction initiated");
-      console.log("Transaction Initiation Success", txnRes.success);
-      clearCart();
-      toast.success("SUCCESS !", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-      // console.log("txnRes.oid from checkout", txnRes.oid);
-      window.location.href = `/order?id=${txnRes.oid}`; // Force redirection
+        console.log("Order updated, payment successful");
+        clearCart();
+        toast.success("SUCCESS !", {
+          // position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else {
+        console.log("Transaction Initiation Error:", txnRes.error);
+        toast.error(txnRes.error, {
+          // position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
     } else {
       console.log("Transaction Initiation Error:", txnRes.error);
-      toast.error(txnRes.error, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
     }
   };
 
   return (
     <div className=" bg-custom-skin">
       <ToastContainer
-        position="top-right"
+        // position="top-right"
         autoClose={5000}
         hideProgressBar="false"
         newestOnTop="false"
@@ -174,10 +193,10 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
             placeholder="Name"
             name="name"
           />
-          {user && user.value ? (
+          {user && user.token ? (
             <input
               value={user.email}
-              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2 text-gray-300 "
+              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2 text-gray-500 "
               type="email"
               placeholder="Email "
               name="email"

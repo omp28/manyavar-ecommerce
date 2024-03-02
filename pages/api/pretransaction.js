@@ -2,10 +2,20 @@ import { redirect } from "next/dist/server/api-utils";
 import connectDB from "../../middleware/mongoose";
 import Order from "../../models/Order";
 import Products from "../../models/Products";
+import pincode from "../../pincode.json";
+import payment from "../../components/payment";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
+      // check if pincode is servicable
+      if (!Object.keys(pincode).includes(req.body.zip)) {
+        res.status(400).json({
+          success: false,
+          error: "Service not available in your area",
+        });
+        return;
+      }
       let cart = req.body.cart;
       let serverSideSubTotal = 0;
       if (req.body.subTotal <= 0) {
@@ -53,8 +63,11 @@ const handler = async (req, res) => {
         });
         return;
       }
+      console.log("req.body---->>>>", req.body);
       const pincode_length = req.body.zip.length;
       const phone_length = req.body.phone.length;
+
+      // form validation
       if (phone_length != 10) {
         res.status(400).json({ success: false, error: "Invalid phone number" });
         return;
@@ -62,9 +75,10 @@ const handler = async (req, res) => {
       if (pincode_length != 6) {
         res.status(400).json({ success: false, error: "Invalid pincode" });
         return;
+        res;
       }
 
-      // Create the order if all products are available and prices are valid
+      // Create the order
       let order = new Order({
         email: req.body.email,
         orderId: req.body.oid,
@@ -74,22 +88,16 @@ const handler = async (req, res) => {
         status: "pending",
       });
       await order.save();
+      const paymentStatus = payment.success; // failure' or 'success' for testing till stripe is integrated
 
-      // Update product quantities in the database
-      for (const item of req.body.cart) {
-        await Products.findOneAndUpdate(
-          { slug: item.productId },
-          { $inc: { availableQty: -item.quantity } }
-        );
-      }
+      console.log("Order saved, payment status:", paymentStatus);
       res.status(200).json({
-        success: true,
         oid: req.body.oid,
-        message: "Order saved, pending payment",
+        paymentStatus,
       });
     } catch (error) {
-      console.error("Error processing manual transaction:", error);
-      res.status(500).json({ success: false, error: "Internal server error." });
+      console.error("Error processing pre transaction:", error);
+      res.status(500).json({ error: "Internal server error." });
     }
   } else {
     res.status(405).json({ success: false, error: "Method not allowed" });
