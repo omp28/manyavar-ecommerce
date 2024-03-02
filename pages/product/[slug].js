@@ -7,18 +7,23 @@ import Product from "../../models/Products";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
+import Error from "next/error";
+import e from "cors";
 
-export default function Post({ buyNow, addToCart, product, variants }) {
+export default function Post({ buyNow, addToCart, product, variants, error }) {
   const router = useRouter();
   const { slug } = router.query;
   const [pin, setPin] = useState();
   const [service, setService] = useState();
-  const [color, setColor] = useState(product.color);
-  const [size, setSize] = useState(product.size);
+  const [color, setColor] = useState();
+  const [size, setSize] = useState();
 
   useEffect(() => {
-    setColor(product.color);
-    setSize(product.size);
+    if (!error) {
+      console.log("produc quan", product.availableQty);
+      setColor(product.color);
+      setSize(product.size);
+    }
   }, [router.query]);
 
   const checkPincodeService = async () => {
@@ -61,7 +66,10 @@ export default function Post({ buyNow, addToCart, product, variants }) {
     let url = `${process.env.NEXT_PUBLIC_HOST}/product/${variants[newColor][newSize]["slug"]}`;
     router.push(url);
   };
-
+  // next custom error page
+  if (error === 404) {
+    return <Error statusCode={404} />;
+  }
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -143,21 +151,22 @@ export default function Post({ buyNow, addToCart, product, variants }) {
                       }}
                       className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10"
                     >
-                      {Object.keys(variants[color]).includes("S") && (
+                      {color && Object.keys(variants[color]).includes("S") && (
                         <option value={"S"}>S</option>
                       )}
-                      {Object.keys(variants[color]).includes("M") && (
+                      {color && Object.keys(variants[color]).includes("M") && (
                         <option value={"M"}>M</option>
                       )}
-                      {Object.keys(variants[color]).includes("L") && (
+                      {color && Object.keys(variants[color]).includes("L") && (
                         <option value={"L"}>L</option>
                       )}
-                      {Object.keys(variants[color]).includes("XL") && (
+                      {color && Object.keys(variants[color]).includes("XL") && (
                         <option value={"XL"}>XL</option>
                       )}
-                      {Object.keys(variants[color]).includes("XXL") && (
-                        <option value={"XXL"}>XXL</option>
-                      )}
+                      {color &&
+                        Object.keys(variants[color]).includes("XXL") && (
+                          <option value={"XXL"}>XXL</option>
+                        )}
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                       <svg
@@ -176,10 +185,17 @@ export default function Post({ buyNow, addToCart, product, variants }) {
                 </div>
               </div>
               <div className="flex">
-                <span className="title-font font-medium text-2xl text-gray-900">
-                  ₹{product.price}
-                </span>
+                {product.availableQty <= 0 && (
+                  <div className="text-red-800 text-xl mt-4">Out of Stock</div>
+                )}
+                {product.availableQty > 0 && (
+                  <span className="title-font font-medium text-2xl text-gray-900">
+                    ₹{product.price}
+                  </span>
+                )}
+
                 <button
+                  disabled={product.availableQty <= 0}
                   onClick={() => {
                     buyNow(
                       slug,
@@ -190,13 +206,13 @@ export default function Post({ buyNow, addToCart, product, variants }) {
                       product.color
                     );
                   }}
-                  className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                  className=" disabled:bg-indigo-200 flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
                 >
                   BUY NOW
                 </button>
                 <button
+                  disabled={product.availableQty <= 0}
                   onClick={() => {
-                    // itemCode, qty, price, name, size, variant
                     addToCart(
                       slug,
                       1,
@@ -206,7 +222,7 @@ export default function Post({ buyNow, addToCart, product, variants }) {
                       product.color
                     );
                   }}
-                  className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                  className=" disabled:bg-indigo-200  flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
                 >
                   Add to Cart
                 </button>
@@ -274,10 +290,19 @@ export default function Post({ buyNow, addToCart, product, variants }) {
 }
 
 export async function getServerSideProps(context) {
+  let error = null;
+
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGODB_URI);
   }
   let product = await Product.findOne({ slug: context.query.slug });
+  if (product === null) {
+    return {
+      props: {
+        error: 404,
+      },
+    };
+  }
   let variants = await Product.find({ title: product.title });
 
   let colorSizeSlug = {};
@@ -292,6 +317,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
+      error: error,
       product: JSON.parse(JSON.stringify(product)),
       variants: JSON.parse(JSON.stringify(colorSizeSlug)),
     },
