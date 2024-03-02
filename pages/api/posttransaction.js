@@ -3,7 +3,8 @@ import connectDB from "../../middleware/mongoose";
 import Products from "../../models/Products";
 
 const handler = async (req, res) => {
-  // stripe
+  // stripe - pending
+  // save transactionID and mark order as paid - pending
 
   if (req.method === "POST") {
     if (!req.body.oid || !req.body.paymentStatus) {

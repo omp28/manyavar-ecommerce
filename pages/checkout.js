@@ -68,7 +68,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       if (
         name.length > 2 &&
         address.length > 3 &&
-        zip.length >= 6 &&
+        zip.length >= 5 &&
         phone.length >= 10 &&
         email.length > 3
       ) {

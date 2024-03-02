@@ -1,9 +1,6 @@
 import React from "react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import mongoose from "mongoose";
 import Order from "../models/Order";
-import { key } from "localforage";
 const Myorder = ({ order }) => {
   // if (!order) {
   //   return <div className=" text-center my-4">Order not found</div>;
@@ -31,7 +28,7 @@ const Myorder = ({ order }) => {
                 </span>
               </p>
             </h1>
-            <div className="grid grid-cols-5 gap-4 mb-4 items-center">
+            <div className="grid grid-cols-4 gap-5 mb-4 items-center">
               <div className="text-center border-t border-b border-gray-300 py-2 text-lg font-bold">
                 ITEM
               </div>
@@ -49,18 +46,21 @@ const Myorder = ({ order }) => {
             {Object.keys(products).map((key) => (
               <div
                 key={key}
-                className="grid grid-cols-5 gap-4 border-t border-gray-200 py-2 items-center"
+                className="grid grid-cols-4 gap-5 border-t border-gray-200 py-2  items-center justify-center text-center"
               >
                 <div className="text-gray-500">{products[key].name}</div>
 
                 <div className="text-gray-900">{products[key].quantity}</div>
                 <div className="text-gray-900">{products[key].size}</div>
-                <div className="text-gray-900">{products[key].price}</div>
+                <div className="text-gray-900">
+                  ₹{products[key].price} ⛌ {products[key].quantity} = ₹
+                  {products[key].quantity * products[key].price}
+                </div>
               </div>
             ))}
 
             <div className="flex-col">
-              <div className=" my-2 title-font font-medium text-2xl text-gray-900">
+              <div className=" my-4 title-font font-medium text-2xl text-gray-900">
                 subTotal : ₹{order.amount}
               </div>
               <button className=" my-2 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
