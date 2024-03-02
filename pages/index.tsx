@@ -1,8 +1,10 @@
 import main from "../components/main.png";
 import Image from "next/image";
+import { ToastContainer } from "react-toastify";
 export default function Home() {
   return (
     <>
+      <ToastContainer />
       <div>
         <Image priority={true} src={main} alt="hero" />
       </div>

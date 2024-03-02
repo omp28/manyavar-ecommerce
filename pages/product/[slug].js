@@ -31,7 +31,7 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
     if (Object.keys(pinJson).includes(pin)) {
       setService(true);
       toast.success("Your Pincode is SERVICABLE", {
-        // position: "bottom-center",
+        toastId: "success1",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -43,17 +43,18 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
       });
     } else {
       setService(false);
-      toast.warn("SORRY !Pincode not SERVICABLE", {
-        position: "bottom-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Slide,
-      });
+      toastId: "success1",
+        toast.warn("SORRY !Pincode not SERVICABLE", {
+          toastId: "failure1",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Slide,
+        });
     }
   };
 

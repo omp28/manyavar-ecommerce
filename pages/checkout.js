@@ -130,6 +130,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
         console.log("Order updated, payment successful");
         clearCart();
         toast.success("SUCCESS !", {
+          toastId: "success1",
           // position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -143,6 +144,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       } else {
         console.log("Transaction Initiation Error:", txnRes.error);
         toast.error(txnRes.error, {
+          toastId: "error1",
           // position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
