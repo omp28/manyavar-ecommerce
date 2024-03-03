@@ -11,6 +11,7 @@ import Script from "next/script";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import payment from "../components/payment";
+import { get } from "http";
 const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -26,15 +27,28 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   useEffect(() => {
     let isMounted = true;
 
-    const user = JSON.parse(localStorage.getItem("myuser"));
-    if (user.token) {
-      setUser(user);
-      setEmail(user.email);
+    const myUser = JSON.parse(localStorage.getItem("myuser"));
+    if (myUser.token) {
+      setUser(myUser);
+      setEmail(myUser.email);
+      fetchData(myUser.token);
     }
     return () => {
       isMounted = false;
     };
   }, []);
+
+  const getPincode = async (pin) => {
+    let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+    let pinJson = await pins.json();
+    if (Object.keys(pinJson).includes(pin)) {
+      setCity(pinJson[pin][0]);
+      setState(pinJson[pin][1]);
+    } else {
+      setCity("");
+      setState("");
+    }
+  };
 
   const handleChange = async (e) => {
     if (e.target.name === "name") {
@@ -44,15 +58,7 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
     } else if (e.target.name === "zip") {
       setZip(e.target.value);
       if (e.target.value.length === 6) {
-        let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
-        let pinJson = await pins.json();
-        if (Object.keys(pinJson).includes(e.target.value)) {
-          setCity(pinJson[e.target.value][0]);
-          setState(pinJson[e.target.value][1]);
-        } else {
-          setCity("");
-          setState("");
-        }
+        getPincode(e.target.value);
       } else {
         setCity("");
         setState("");
@@ -74,6 +80,23 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
         setDisabled(false);
       }
     }, 100);
+  };
+
+  const fetchData = async (token) => {
+    let data = { token: token };
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    let Res = await a.json();
+    setName(Res.name);
+    setAddress(Res.address);
+    setZip(Res.zip);
+    setPhone(Res.phone);
+    getPincode(Res.zip);
   };
 
   const initiatePayment = async (isMounted) => {
