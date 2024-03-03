@@ -81,10 +81,12 @@ const handler = async (req, res) => {
       // Create the order
       let order = new Order({
         email: req.body.email,
+        name: req.body.name,
         orderId: req.body.oid,
         amount: req.body.subTotal,
         address: req.body.address,
         city: req.body.city,
+        phone: req.body.phone,
         state: req.body.state,
         products: req.body.cart,
         status: "pending",

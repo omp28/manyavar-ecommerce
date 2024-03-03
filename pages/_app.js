@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import LoadingBar from "react-top-loading-bar";
 import Nav from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
@@ -110,6 +112,17 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
+      <ToastContainer
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={true}
+        theme="light"
+      />
       <LoadingBar
         height={4}
         color="#511E07"

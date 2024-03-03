@@ -8,8 +8,7 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import Link from "next/link";
 import Head from "next/head";
 import Script from "next/script";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import payment from "../components/payment";
 const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
@@ -131,29 +130,11 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
         clearCart();
         toast.success("SUCCESS !", {
           toastId: "success1",
-          // position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
         });
       } else {
         console.log("Transaction Initiation Error:", txnRes.error);
         toast.error(txnRes.error, {
           toastId: "error1",
-          // position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
         });
       }
     } else {
@@ -163,19 +144,6 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
 
   return (
     <div className=" bg-custom-skin">
-      <ToastContainer
-        // position="top-right"
-        autoClose={5000}
-        hideProgressBar="false"
-        newestOnTop="false"
-        closeOnClick
-        rtl="false"
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-      <ToastContainer />
       <Head>
         <meta
           name="viewport"

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { set } from "mongoose";
+import { toast } from "react-toastify";
 
 const myaccount = () => {
   const [name, setName] = useState("");
@@ -14,17 +16,19 @@ const myaccount = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   let router = useRouter();
   useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("myuser"));
-    if (!user) {
+    let myuser = JSON.parse(localStorage.getItem("myuser"));
+    if (!myuser) {
       router.push("/");
     }
-    if (user && user.token) {
-      setUser(user);
-      setEmail(user.email);
+    if (myuser && myuser.token) {
+      setUser(myuser);
+      setEmail(myuser.email);
+      fetchData(myuser.token);
     }
   }, []);
-  const handleUserUpdate = async () => {
-    let data = { token: user.token };
+
+  const fetchData = async (token) => {
+    let data = { token: token };
     let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
       method: "POST",
       headers: {
@@ -33,7 +37,32 @@ const myaccount = () => {
       body: JSON.stringify(data),
     });
     let Res = await a.json();
-    console.log(Res);
+    console.log("ressss--->>>", Res);
+    setName(Res.name);
+    setAddress(Res.address);
+    setZip(Res.zip);
+    setPhone(Res.phone);
+  };
+
+  const handleUserUpdate = async () => {
+    try {
+      let data = { token: user.token, address, name, zip, phone };
+      let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updateuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      let Res = await a.json();
+      console.log("ressss--->>>", Res);
+      toast.success("User Updated", { toastId: "userUpdated1" });
+    } catch (e) {
+      console.log("Error fetching and updating user data:", e);
+      toast.error("Error fetching and updating user data", {
+        toastId: "userError1",
+      });
+    }
   };
 
   const handleChange = async (e) => {
@@ -69,56 +98,56 @@ const myaccount = () => {
       <div className="text-gray-500 text-sm text-center">
         Email can not be changed
       </div>
-      <form>
-        <div className=" mx-auto">
-          <div className="flex flex-col justify-center items-center">
-            <input
-              onChange={handleChange}
-              value={name}
-              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-              type="text"
-              placeholder="Name"
-              name="name"
-            />
+      {/* <form> */}
+      <div className=" mx-auto">
+        <div className="flex flex-col justify-center items-center">
+          <input
+            onChange={handleChange}
+            value={name}
+            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+            type="text"
+            placeholder="Name"
+            name="name"
+          />
 
-            <input
-              onChange={handleChange}
-              // value={user.email}
-              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2 text-gray-500 "
-              type="email"
-              placeholder="Email "
-              name="email"
-              // readOnly
-            />
+          <input
+            onChange={handleChange}
+            value={user.email}
+            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2 text-gray-500 "
+            type="email"
+            placeholder="Email "
+            name="email"
+            // readOnly
+          />
 
-            <input
-              onChange={handleChange}
-              value={phone}
-              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-              type="number"
-              placeholder="Phone Number"
-              name="phone"
-            />
-            <input
-              onChange={handleChange}
-              value={address}
-              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-              type="text"
-              placeholder="Address Line"
-              name="address"
-            />
-            <input
-              value={zip}
-              onChange={handleChange}
-              className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
-              type="number"
-              placeholder="Zip Code"
-              name="zip"
-            />
-          </div>
-          {/* change password  */}
-          <div className="flex flex-col justify-center items-center">
-            <input
+          <input
+            onChange={handleChange}
+            value={phone}
+            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+            type="number"
+            placeholder="Phone Number"
+            name="phone"
+          />
+          <input
+            onChange={handleChange}
+            value={address}
+            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+            type="text"
+            placeholder="Address Line"
+            name="address"
+          />
+          <input
+            value={zip}
+            onChange={handleChange}
+            className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
+            type="number"
+            placeholder="Zip Code"
+            name="zip"
+          />
+        </div>
+        {/* change password  */}
+        <div className="flex flex-col justify-center items-center">
+          {/* <input
               className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
               type="password"
               placeholder="Old Password"
@@ -134,20 +163,20 @@ const myaccount = () => {
               className="border border-gray-500 rounded-lg px-4 py-2 my-4 w-1/2"
               type="password"
               placeholder="Confirm Password"
-            />
+            /> */}
 
-            <button
-              // disabled={disabled}
-              onClick={handleUserUpdate}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg my-4 w-1/3"
-            >
-              Update
-            </button>
-            <div />
-          </div>
+          <button
+            // disabled={disabled}
+            onClick={handleUserUpdate}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg my-4 w-1/3"
+          >
+            Update
+          </button>
           <div />
         </div>
-      </form>
+        <div />
+      </div>
+      {/* </form> */}
     </>
   );
 };

@@ -1,10 +1,9 @@
-//[slug].js
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { use, useState } from "react";
 import mongoose from "mongoose";
 import Product from "../../models/Products";
-import { ToastContainer, toast, Slide } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 import Error from "next/error";
@@ -30,31 +29,10 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
     let pinJson = await pins.json();
     if (Object.keys(pinJson).includes(pin)) {
       setService(true);
-      toast.success("Your Pincode is SERVICABLE", {
-        toastId: "success1",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Slide,
-      });
+      toast.success("Your Pincode is SERVICABLE", { toastId: "success1" });
     } else {
       setService(false);
-      toastId: "success1",
-        toast.warn("SORRY !Pincode not SERVICABLE", {
-          toastId: "failure1",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Slide,
-        });
+      toast.warn("SORRY !Pincode not SERVICABLE", { toastId: "error1" });
     }
   };
 
@@ -73,19 +51,6 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
-        <ToastContainer
-          // position="bottom-center"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition="Slide"
-        />
         <div className="container px-5 py-24 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img

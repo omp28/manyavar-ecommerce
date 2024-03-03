@@ -8,8 +8,8 @@ const handler = async (req, res) => {
     let user = jsonwebtoken.verify(jwt, process.env.JWT_SECRET, {});
     // console.log(user);
     let dbuser = await User.findOne({ email: user.email });
-    const { name, email, address, pincode } = dbuser;
-    res.status(200).json({ name, email, address, pincode });
+    const { name, email, address, zip, phone } = dbuser;
+    res.status(200).json({ name, email, address, zip, phone });
   } else {
     res.status(400).json({ error: error });
   }
