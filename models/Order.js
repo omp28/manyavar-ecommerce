@@ -16,6 +16,8 @@ const OrderSchema = new mongoose.Schema(
       },
     ],
     address: { type: String, required: true },
+    city: { type: String, required: true },
+    zip: { type: String, required: true },
     transactionId: { type: String },
     amount: { type: Number, required: true },
     status: { type: String, default: "Initiated", required: true },

@@ -63,7 +63,7 @@ const handler = async (req, res) => {
         });
         return;
       }
-      console.log("req.body---->>>>", req.body);
+      // console.log("req.body---->>>>", req.body);
       const pincode_length = req.body.zip.length;
       const phone_length = req.body.phone.length;
 
@@ -84,6 +84,8 @@ const handler = async (req, res) => {
         orderId: req.body.oid,
         amount: req.body.subTotal,
         address: req.body.address,
+        city: req.body.city,
+        state: req.body.state,
         products: req.body.cart,
         status: "pending",
       });
