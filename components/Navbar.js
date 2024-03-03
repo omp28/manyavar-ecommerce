@@ -229,7 +229,7 @@ const Nav = ({
                   {/* checkout */}
                   <Link href="/checkout">
                     <button
-                      disabled={Object.keys(cart).length === 0}
+                      disabled={Object.keys(cart).length === 0 || !user.value}
                       className=" disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
                     >
                       <IoBagCheckOutline size={20} /> CheckOut
