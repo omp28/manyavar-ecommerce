@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const forgot = () => {
+const Forgot = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,7 +26,7 @@ const forgot = () => {
     if (localStorage.getItem("token")) {
       router.push(process.env.NEXT_PUBLIC_HOST);
     }
-  }, []);
+  }, [router]);
   const sendResetEmail = async (e) => {
     let data = { email, sendMail: true };
     let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
@@ -188,4 +188,4 @@ const forgot = () => {
   );
 };
 
-export default forgot;
+export default Forgot;

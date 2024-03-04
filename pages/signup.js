@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast, Bounce } from "react-toastify";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-const signUp = () => {
+const SignUp = () => {
   const [name, setName] = useState(" ");
   const [email, setEmail] = useState(" ");
   const [password, setPassword] = useState(" ");
@@ -13,7 +13,7 @@ const signUp = () => {
     if (localStorage.getItem("token")) {
       router.push(process.env.NEXT_PUBLIC_HOST);
     }
-  }, []);
+  }, [router]);
   const handleChange = (e) => {
     if (e.target.name === "name") {
       setName(e.target.value);
@@ -151,4 +151,4 @@ const signUp = () => {
   );
 };
 
-export default signUp;
+export default SignUp;

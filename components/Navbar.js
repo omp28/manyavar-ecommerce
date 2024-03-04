@@ -39,7 +39,6 @@ const Nav = ({
   };
   useEffect(() => {
     const hideSidebarRoutes = ["/orders", "/login", "/checkout"];
-
     if (hideSidebarRoutes.includes(router.pathname)) {
       setIsSidebarVisible(false);
     } else {
@@ -55,7 +54,7 @@ const Nav = ({
         ref.current.classList.add("hidden");
       }
     }
-  }, [cart]);
+  }, [cart, router]);
   return (
     <div
       className={

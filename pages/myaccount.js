@@ -4,7 +4,7 @@ import { useState } from "react";
 import { set } from "mongoose";
 import { toast } from "react-toastify";
 
-const myaccount = () => {
+const Myaccount = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [zip, setZip] = useState("");
@@ -26,7 +26,7 @@ const myaccount = () => {
       setEmail(myuser.email);
       fetchData(myuser.token);
     }
-  }, []);
+  }, [router]);
 
   const fetchData = async (token) => {
     let data = { token: token };
@@ -241,4 +241,4 @@ const myaccount = () => {
   );
 };
 
-export default myaccount;
+export default Myaccount;

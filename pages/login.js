@@ -5,7 +5,7 @@ import { toast, Bounce } from "react-toastify";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const login = () => {
+const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState(" ");
   const [password, setPassword] = useState(" ");
@@ -13,7 +13,7 @@ const login = () => {
     if (localStorage.getItem("myuser")) {
       router.push(process.env.NEXT_PUBLIC_HOST);
     }
-  }, []);
+  }, [router]);
   const handleChange = (e) => {
     if (e.target.name === "email") {
       setEmail(e.target.value);
@@ -150,4 +150,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

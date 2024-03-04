@@ -38,7 +38,7 @@ export default function App({ Component, pageProps }) {
       setUser({ value: myuser.token, email: myuser.email });
     }
     setKey(Math.random());
-  }, [router.query]);
+  }, [router.query, router.events]);
 
   const logout = () => {
     localStorage.removeItem("myuser");

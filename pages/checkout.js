@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import payment from "../components/payment";
 import { get } from "http";
-const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
+const Checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -26,6 +26,23 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
 
   useEffect(() => {
     let isMounted = true;
+
+    const fetchData = async (token) => {
+      let data = { token: token };
+      let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      let Res = await a.json();
+      setName(Res.name);
+      setAddress(Res.address);
+      setZip(Res.zip);
+      setPhone(Res.phone);
+      getPincode(Res.zip);
+    };
 
     const myUser = JSON.parse(localStorage.getItem("myuser"));
     if (myUser.token) {
@@ -80,23 +97,6 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
         setDisabled(false);
       }
     }, 100);
-  };
-
-  const fetchData = async (token) => {
-    let data = { token: token };
-    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    let Res = await a.json();
-    setName(Res.name);
-    setAddress(Res.address);
-    setZip(Res.zip);
-    setPhone(Res.phone);
-    getPincode(Res.zip);
   };
 
   const initiatePayment = async (isMounted) => {
@@ -332,4 +332,4 @@ const checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
   );
 };
 
-export default checkout;
+export default Checkout;

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { set } from "mongoose";
 import { Link } from "react-router-dom";
 
-const orders = () => {
+const Orders = () => {
   const router = useRouter();
   const [orders, setOrders] = React.useState([]);
   useEffect(() => {
@@ -30,7 +30,7 @@ const orders = () => {
     } else {
       fetchOrders();
     }
-  }, []);
+  }, [router]);
   return (
     <div>
       <div className="mx-auto">
@@ -81,4 +81,4 @@ const orders = () => {
   );
 };
 
-export default orders;
+export default Orders;

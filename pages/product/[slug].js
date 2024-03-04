@@ -22,7 +22,7 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
       setColor(product.color);
       setSize(product.size);
     }
-  }, [router.query]);
+  }, [router.query, error, product.color, product.size]);
 
   const checkPincodeService = async () => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
