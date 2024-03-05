@@ -116,6 +116,7 @@ const Checkout = ({ cart, clearCart, addToCart, removeFromCart, subTotal }) => {
       oid,
       email,
       name,
+      city,
       address,
       zip,
       phone,

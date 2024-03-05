@@ -86,6 +86,7 @@ const handler = async (req, res) => {
         amount: req.body.subTotal,
         address: req.body.address,
         city: req.body.city,
+        zip: req.body.zip,
         phone: req.body.phone,
         state: req.body.state,
         products: req.body.cart,
