@@ -52,7 +52,7 @@ const Login = () => {
         router.push(process.env.NEXT_PUBLIC_HOST);
       }, 2000);
     } else {
-      toast.error("LogIn FAILED !", {
+      toast.error(response.message, {
         toastId: "loginFailed1",
       });
     }

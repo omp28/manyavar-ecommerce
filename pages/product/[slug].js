@@ -149,86 +149,72 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
                   </div>
                 </div>
               </div>
-              <div className="flex">
+              <div className="flex flex-col items-center justify-center md:flex-row">
                 {product.availableQty <= 0 && (
                   <div className="text-red-800 text-xl mt-4">Out of Stock</div>
                 )}
                 {product.availableQty > 0 && (
-                  <span className="title-font font-medium text-2xl text-gray-900">
+                  <span className="title-font font-medium text-2xl text-gray-900 mb-2">
                     ₹{product.price}
                   </span>
                 )}
 
-                <button
-                  disabled={product.availableQty <= 0}
-                  onClick={() => {
-                    buyNow(
-                      slug,
-                      1,
-                      product.price,
-                      product.title,
-                      product.size,
-                      product.color
-                    );
-                  }}
-                  className=" disabled:bg-indigo-200 flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
-                >
-                  BUY NOW
-                </button>
-                <button
-                  disabled={product.availableQty <= 0}
-                  onClick={() => {
-                    addToCart(
-                      slug,
-                      1,
-                      product.price,
-                      product.title,
-                      product.size,
-                      product.color
-                    );
-                  }}
-                  className=" disabled:bg-indigo-200  flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
-                >
-                  Add to Cart
-                </button>
-                <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                  <svg
-                    fill="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
+                <div className="flex flex-col md:flex-row w-full">
+                  <button
+                    disabled={product.availableQty <= 0}
+                    onClick={() => {
+                      buyNow(
+                        slug,
+                        1,
+                        product.price,
+                        product.title,
+                        product.size,
+                        product.color
+                      );
+                    }}
+                    className="disabled:bg-indigo-200 bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded w-full md:w-auto max-w-xs mx-auto md:mx-4 mb-2 "
                   >
-                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-                  </svg>
-                </button>
+                    BUY NOW
+                  </button>
+
+                  <button
+                    disabled={product.availableQty <= 0}
+                    onClick={() => {
+                      addToCart(
+                        slug,
+                        1,
+                        product.price,
+                        product.title,
+                        product.size,
+                        product.color
+                      );
+                    }}
+                    className="disabled:bg-indigo-200 bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded w-full md:w-auto max-w-xs mx-auto md:mx-4 mb-2 "
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               </div>
+
               {/* pincode  */}
               <div className="  flex items-center justify-center p-4">
-                <form className="  max-w-sm mx-auto">
-                  <label
-                    htmlFor="pincode-input"
-                    className=" text-center  block mb-2 text-sm font-medium text-gray-900 dark:text-black"
-                  >
-                    Enter Pincode:
-                  </label>
-                  <input
-                    onChange={onChangePin}
-                    type="number"
-                    id="pincode-input"
-                    aria-describedby="helper-text-explanation"
-                    className="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="90210"
-                    required
-                  />
-                </form>
+                {/* <form className="  max-w-sm mx-auto"> */}
+                <input
+                  onChange={onChangePin}
+                  placeholder="Enter Pincode"
+                  type="number"
+                  id="pincode-input"
+                  aria-describedby="helper-text-explanation"
+                  className="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+                {/* </form> */}
 
                 <button
                   onClickCapture={checkPincodeService}
                   onClick={checkPincodeService}
                   type="button"
-                  className="  border-2 border-red-700  focus:outline-none text-white bg-gray-900   focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 mt-2 dark:bg-gray-600 dark:hover:bg-gray-900 "
+                  className="  border-2 border-red-700  focus:outline-none text-white bg-gray-900   focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-gray-600 dark:hover:bg-gray-900 "
                 >
                   Check
                 </button>
