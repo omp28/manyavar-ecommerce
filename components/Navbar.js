@@ -150,14 +150,14 @@ const Nav = ({
 
               <Drawer
                 isOpen={isOpen}
-                placement="left"
+                placement="right"
                 onClose={onClose}
                 finalFocusRef={ref}
               >
                 <DrawerOverlay />
 
                 <DrawerContent>
-                  <DrawerBody className=" translate-x-0 border-2 border-gray-300 rounded-lg w-96 bg-custom-skin h-full scroll-auto py-4 px-8 ">
+                  <DrawerBody className=" border-2 border-gray-300 rounded-lg w-96 bg-custom-skin h-full scroll-auto py-4 px-8 absolute right-0">
                     <div className=" flex justify-end">
                       <DrawerCloseButton className=" right-0  " />
                     </div>
