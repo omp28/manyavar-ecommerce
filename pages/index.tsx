@@ -8,7 +8,7 @@ export default function Home() {
       <div>
         <Image priority={true} src={main} alt="hero" />
       </div>
-      <div className="flex py-8">
+      <div className=" py-8 flex flex-col sm:flex-row  ">
         <div className="container mx-auto px-4 py-8 justify-center items-center flex flex-col">
           <div className="text-center pb-8">
             <h1 className="text-4xl font-bold">Get recommendations from a</h1>
@@ -20,14 +20,20 @@ export default function Home() {
             </p>
             <a
               href="#"
-              className="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-700 duration-500  text-white rounded-md  font-medium"
+              className=" items-center px-4 py-2 bg-orange-500 hover:bg-orange-700 duration-500  text-white rounded-md  font-medium hidden sm:block "
             >
               BOOK A VIDEO CALL
             </a>
           </div>
         </div>
-        <div>
+        <div className=" flex justify-center items-center">
           <Image src={book_apoointment} alt="hero" />
+          <a
+            href="#"
+            className=" items-center px-4 py-2 bg-orange-500 hover:bg-orange-700 duration-500  text-white rounded-md  font-medium absolute block sm:hidden "
+          >
+            BOOK A VIDEO CALL
+          </a>
         </div>
       </div>
     </>
