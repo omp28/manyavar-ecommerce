@@ -7,8 +7,8 @@ import { useEffect } from "react";
 
 const Login = () => {
   const router = useRouter();
-  const [email, setEmail] = useState(" ");
-  const [password, setPassword] = useState(" ");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   useEffect(() => {
     if (localStorage.getItem("myuser")) {
       router.push(process.env.NEXT_PUBLIC_HOST);

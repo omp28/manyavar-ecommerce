@@ -87,24 +87,31 @@ const Nav = ({
                 <button>Accessories </button>
               </Link>
             </div>
-            <div className="flex w-1/4 justify-around">
-              <button className="items-center  flex-col">
+            <div className="flex  w-1/4 justify-around ">
+              <button className="  flex-col">
                 <h1
                   onClick={() => {
                     setDropdown(!dropdown);
                   }}
                 >
                   {dropdown && (
-                    <div className="absolute right-52 text-white top-28 bg-custom-bg-footer rounded-md w-28 leading-8 text-sm z-10">
+                    <div className=" absolute text-white top-28 bg-custom-bg-footer rounded-md w-28 leading-8 text-sm z-10">
                       <ul>
                         <Link href={"/myaccount"}>
-                          <li className="hover:text-yellow-400">My Account</li>
+                          <li className="hover:text-yellow-400 duration-300">
+                            My Account
+                          </li>
                         </Link>
                         <Link href={"/orders"}>
-                          <li className="hover:text-yellow-400">Orders</li>
+                          <li className="hover:text-yellow-400 duration-300">
+                            Orders
+                          </li>
                         </Link>
 
-                        <li onClick={Logout} className="hover:text-yellow-400">
+                        <li
+                          onClick={Logout}
+                          className="hover:text-yellow-400 duration-300"
+                        >
                           LogOut
                         </li>
                       </ul>
@@ -119,7 +126,7 @@ const Nav = ({
                         />
                       </div>
 
-                      <h1 className="text-center">Account</h1>
+                      <h1 className="text-center w-28">Account</h1>
                     </div>
                   )}
                 </h1>
@@ -227,16 +234,15 @@ const Nav = ({
                     <Link href="/checkout">
                       <button
                         disabled={Object.keys(cart).length === 0 || !user.value}
-                        className=" disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
+                        className=" disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 duration-300  text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg "
                       >
                         <IoBagCheckOutline size={20} /> CheckOut
                       </button>
                     </Link>
-
                     <button
                       disabled={Object.keys(cart).length === 0}
                       onClick={clearCart}
-                      className="disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
+                      className="disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 duration-300 text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg"
                     >
                       Clear Cart
                     </button>

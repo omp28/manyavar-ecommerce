@@ -5,9 +5,9 @@ import { toast, Bounce } from "react-toastify";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 const SignUp = () => {
-  const [name, setName] = useState(" ");
-  const [email, setEmail] = useState(" ");
-  const [password, setPassword] = useState(" ");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
   useEffect(() => {
     if (localStorage.getItem("token")) {
