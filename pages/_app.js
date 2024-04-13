@@ -15,6 +15,8 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
 
+  console.log("router", router.asPath);
+
   useEffect(() => {
     router.events.on("routeChangeStart", () => {
       setProgress(50);
@@ -130,7 +132,7 @@ export default function App({ Component, pageProps }) {
         waitingTime={400}
         onLoaderFinished={() => setProgress(0)}
       />
-      {key && (
+      {key && !router.asPath.startsWith("/admin") ? (
         <Nav
           Logout={logout}
           user={user}
@@ -141,7 +143,7 @@ export default function App({ Component, pageProps }) {
           clearCart={clearCart}
           subTotal={subTotal}
         />
-      )}
+      ) : null}
       <Component
         buyNow={buyNow}
         cart={cart}
@@ -151,7 +153,7 @@ export default function App({ Component, pageProps }) {
         subTotal={subTotal}
         {...pageProps}
       />
-      <Footer />
+      {!router.asPath.startsWith("/admin") ? <Footer /> : null}
     </>
   );
 }

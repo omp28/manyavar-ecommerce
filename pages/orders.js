@@ -35,7 +35,7 @@ const Orders = () => {
     <div>
       <div className="mx-auto">
         <h1 className="text-center my-4">My Orders</h1>
-        <div className="items">
+        <div className="items h-[70vh] overflow-y-scroll">
           <div className="relative overflow-x-auto ">
             <table className="w-full text-sm text-center ">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">

@@ -14,8 +14,10 @@ const handler = async (req, res) => {
         price: req.body[i].price,
         availableQty: req.body[i].availableQty,
       });
+
       await p.save();
     }
+    console.log("Products added successfully");
     res.status(200).json({ message: "Success !" });
   } else {
     res.status(400).json({ message: "This method is not allowed" });
