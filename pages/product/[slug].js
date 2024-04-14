@@ -17,6 +17,8 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
   const [color, setColor] = useState();
   const [size, setSize] = useState();
 
+  console.log("product--->>>", product);
+
   useEffect(() => {
     if (!error) {
       setColor(product.color);

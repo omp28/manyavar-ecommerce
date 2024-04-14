@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import { toast } from "react-toastify";
 
 function Addproduct() {
   const [title, setTitle] = useState("");
@@ -12,39 +13,61 @@ function Addproduct() {
   const [price, setPrice] = useState(0);
   const [availableQty, setAvailableQty] = useState(0);
 
+  const handleChange = (e) => {
+    if (e.target.files[0]) {
+      setImg(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!img) {
+      console.error("No image selected");
+      return;
+    }
 
     const randomNumber = Math.floor(10000000 + Math.random() * 90000000);
     const newSlug = slug + randomNumber.toString();
 
-    const productData = [
-      {
-        title,
-        slug: newSlug,
-        desc,
-        img,
-        category,
-        size,
-        color,
-        price,
-        availableQty,
-      },
-    ];
+    const productData = {
+      title,
+      slug: newSlug,
+      desc,
+      category,
+      size,
+      color,
+      price,
+      availableQty,
+      img: img,
+    };
 
     try {
-      const response = await Axios.post("/api/addproducts", productData);
-      console.log("Product Uploaded:", response.data);
+      console.log("send data", [productData]);
+      const response = await Axios.post("/api/addproducts", productData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("response", response);
+      if (response.data.success) {
+        toast.success("Product added successfully");
+      }
     } catch (error) {
       console.error("Upload Error:", error);
-      console.log("Product Data2:", productData);
     }
   };
 
   return (
     <>
       <h1 className=" text-center text-3xl mt-4">Add Product</h1>
-      <form onSubmit={handleSubmit} className=" w-[70%] mx-auto p-6">
+      <form
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+        action="/api/addproducts"
+        className=" w-[70%] mx-auto p-6"
+        method="POST"
+      >
         <div className="mb-4">
           <label htmlFor="title" className="block text-gray-700">
             Title
@@ -89,11 +112,12 @@ function Addproduct() {
             Image
           </label>
           <input
-            type="text"
+            type="file"
             id="img"
+            name="img"
+            onChange={handleChange}
             className="w-full border border-gray-300 p-2 rounded"
             required
-            onChange={(e) => setImg(e.target.value)}
           />
         </div>
         <div className="mb-4">
