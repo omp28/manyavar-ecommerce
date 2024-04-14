@@ -139,7 +139,12 @@ export default function MiniDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <div className="flex bg-custom-skin rounded-xl py-2 px-4  my-2">
+        <button
+          onClick={() => {
+            window.location.href = "/admin/addproduct";
+          }}
+          className="flex bg-custom-skin rounded-xl py-2 px-4  my-2"
+        >
           <ListItemIcon
             sx={{
               minWidth: 0,
@@ -150,15 +155,8 @@ export default function MiniDrawer() {
             <IoIosAddCircleOutline className=" text-3xl text-custom-bg-footer" />
           </ListItemIcon>
 
-          <button
-            className=" ml-6"
-            onClick={() => {
-              window.location.href = "/admin/addproduct";
-            }}
-          >
-            Add Product
-          </button>
-        </div>
+          <h1 className=" ml-6 text-xl">Add Products</h1>
+        </button>
 
         <Divider />
       </Drawer>
