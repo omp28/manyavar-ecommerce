@@ -7,8 +7,10 @@ const storage = multer.diskStorage({
     cb(null, "public/productImage");
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix + "-" + file.originalname);
+    // Generate a random number with 8 digits
+    const randomNumber = Math.floor(Math.random() * 100000000);
+    // Combine the random number with the original filename
+    cb(null, randomNumber + "-" + file.originalname);
   },
 });
 
