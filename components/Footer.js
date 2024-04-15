@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import logo from "../components/logo.png";
+import logo from "../public/images/logo.png";
 import { SiPaytm } from "react-icons/si";
 import { FaApplePay } from "react-icons/fa6";
 import { RiVisaFill } from "react-icons/ri";

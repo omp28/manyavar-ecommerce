@@ -1,12 +1,12 @@
-import main from "../components/main.png";
 import Image from "next/image";
-import book_apoointment from "../components/book_appointment.png";
+import book_apoointment from "../public/images/book_appointment.png";
+import Swiper from "../components/swiper";
 
 export default function Home() {
   return (
     <>
       <div>
-        <Image priority={true} src={main} alt="hero" />
+        <Swiper />
       </div>
       <div className=" py-8 flex flex-col sm:flex-row  ">
         <div className="container mx-auto px-4 py-8 justify-center items-center flex flex-col">

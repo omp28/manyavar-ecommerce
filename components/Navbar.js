@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "./logo.png";
+import logo from "../public/images/logo.png";
 import { IoIosHeart } from "react-icons/io";
 import { MdAccountCircle } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
