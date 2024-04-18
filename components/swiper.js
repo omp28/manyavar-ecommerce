@@ -18,6 +18,7 @@ export default function App() {
   return (
     <>
       <Swiper
+        style={{ zIndex: "0" }}
         spaceBetween={30}
         loop={true}
         centeredSlides={true}

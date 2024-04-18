@@ -16,6 +16,13 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
   const [service, setService] = useState();
   const [color, setColor] = useState();
   const [size, setSize] = useState();
+  const [logedIn, setLogedIn] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("myuser")) {
+      setLogedIn(true);
+    }
+  }, []);
 
   console.log("product--->>>", product);
 
@@ -162,23 +169,43 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
                 )}
 
                 <div className="flex flex-col md:flex-row w-full">
-                  <button
-                    disabled={product.availableQty <= 0}
-                    onClick={() => {
-                      buyNow(
-                        slug,
-                        1,
-                        product.price,
-                        product.title,
-                        product.size,
-                        product.color
-                      );
-                    }}
-                    className="disabled:bg-indigo-200 bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded w-full md:w-auto max-w-xs mx-auto md:mx-4 mb-2 "
-                  >
-                    BUY NOW
-                  </button>
-
+                  {logedIn ? (
+                    <button
+                      disabled={product.availableQty <= 0 || !logedIn}
+                      onClick={() => {
+                        buyNow(
+                          slug,
+                          1,
+                          product.price,
+                          product.title,
+                          product.size,
+                          product.color
+                        );
+                      }}
+                      className="  disabled:bg-orange-200 bg-orange-500
+                           hover:bg-orange-700 hover:duration-500 ml-4
+                     my-2 w-1/3 flex text-center text-white font-semibold py-2 px-4 border  
+                        border-orange-700 hover:border-transparent
+                     rounded-lg"
+                    >
+                      BUY NOW
+                    </button>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        toast.error("Please Login to Buy", {
+                          toastId: "error2",
+                        });
+                      }}
+                      className=" cursor-pointer bg-orange-200 
+                            hover:duration-500 ml-4
+                     my-2 w-1/3 flex text-center text-white font-semibold py-2 px-4 border  
+                        border-orange-700 hover:border-transparent
+                     rounded-lg"
+                    >
+                      BUY NOW
+                    </div>
+                  )}
                   <button
                     disabled={product.availableQty <= 0}
                     onClick={() => {
@@ -191,7 +218,11 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
                         product.color
                       );
                     }}
-                    className="disabled:bg-indigo-200 bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded w-full md:w-auto max-w-xs mx-auto md:mx-4 mb-2 "
+                    className="  disabled:bg-orange-200 bg-orange-500
+                           hover:bg-orange-700 hover:duration-500 ml-4
+                     my-2 w-1/3 flex text-center text-white font-semibold py-2 px-4 border  
+                        border-orange-700 hover:border-transparent
+                     rounded-lg"
                   >
                     Add to Cart
                   </button>
@@ -200,7 +231,6 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
 
               {/* pincode  */}
               <div className="  flex items-center justify-center p-4">
-                {/* <form className="  max-w-sm mx-auto"> */}
                 <input
                   onChange={onChangePin}
                   placeholder="Enter Pincode"
@@ -210,7 +240,6 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
                   className="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                 />
-                {/* </form> */}
 
                 <button
                   onClickCapture={checkPincodeService}
@@ -220,19 +249,6 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
                 >
                   Check
                 </button>
-              </div>
-              {/* pincode servicebility */}
-              <div className=" flex justify-center items-center">
-                {!service && service != null && (
-                  <div className=" text-red-800 text-sm mt-4">
-                    sorry ! We dont deliver
-                  </div>
-                )}
-                {service && service != null && (
-                  <div className=" text-green-800 text-sm mt-4">
-                    This Pincode is Servicable
-                  </div>
-                )}
               </div>
             </div>
           </div>
