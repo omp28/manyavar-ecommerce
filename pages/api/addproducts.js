@@ -38,10 +38,8 @@ const handler = async (req, res) => {
       };
 
       try {
-        console.log("in the try block");
         const product = new Product(productData);
         const savedProduct = await product.save();
-        console.log("Product saved successfully", savedProduct);
         res.status(200).json({ success: true, product: savedProduct });
       } catch (error) {
         console.error("Error saving product:", error);

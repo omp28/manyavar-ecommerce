@@ -95,7 +95,6 @@ export default function OrdersTable() {
     const fetchOrders = async () => {
       const response = await fetch("/api/adminorders"); // Assuming an API endpoint
       const data = await response.json();
-      console.log("Orders:", data);
       setOrders(data);
     };
 

@@ -15,8 +15,6 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
 
-  console.log("router", router.asPath);
-
   useEffect(() => {
     router.events.on("routeChangeStart", () => {
       setProgress(50);

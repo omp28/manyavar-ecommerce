@@ -10,6 +10,7 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoLogIn } from "react-icons/io5";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import {
   Drawer,
   DrawerBody,
@@ -231,14 +232,28 @@ const Nav = ({
                     </ol>
                     <span className=" w-1/3  ">subTotal : ₹{subTotal}</span>
                     {/* checkout */}
-                    <Link href="/checkout">
-                      <button
-                        disabled={Object.keys(cart).length === 0 || !user.value}
-                        className=" disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 duration-300  text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg "
+                    {user.value ? (
+                      <Link href="/checkout">
+                        <button
+                          disabled={
+                            Object.keys(cart).length === 0 || !user.value
+                          }
+                          className=" disabled:bg-orange-200 my-2 w-full  bg-orange-500  flex text-center hover:bg-orange-700 duration-300  text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg "
+                        >
+                          <IoBagCheckOutline size={20} /> CheckOut
+                        </button>
+                      </Link>
+                    ) : (
+                      <div
+                        onClick={() => {
+                          toast.error("Please Login to Checkout");
+                        }}
+                        className=" bg-orange-200 my-2 w-full    flex text-center duration-300  text-white font-semibold hover:text-white py-2 px-4 border border-orange-700 hover:border-transparent rounded-lg "
                       >
                         <IoBagCheckOutline size={20} /> CheckOut
-                      </button>
-                    </Link>
+                      </div>
+                    )}
+
                     <button
                       disabled={Object.keys(cart).length === 0}
                       onClick={clearCart}

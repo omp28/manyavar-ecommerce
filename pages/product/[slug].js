@@ -24,8 +24,6 @@ export default function Post({ buyNow, addToCart, product, variants, error }) {
     }
   }, []);
 
-  console.log("product--->>>", product);
-
   useEffect(() => {
     if (!error) {
       setColor(product.color);

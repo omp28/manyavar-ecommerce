@@ -4,7 +4,6 @@ import Link from "next/link";
 import Product from "../models/Products";
 import mongoose from "mongoose";
 const accessories = ({ products }) => {
-  // console.log(products);
   return (
     <>
       <section className="text-gray-600 body-font">

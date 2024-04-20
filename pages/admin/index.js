@@ -25,6 +25,8 @@ import { background } from "@chakra-ui/react";
 import Chart from "./components/chart";
 import { FaRupeeSign } from "react-icons/fa";
 import { GiStack } from "react-icons/gi";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
@@ -95,7 +97,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const router = useRouter();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -103,6 +105,34 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const fetchAdmin = async (token) => {
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token }),
+    });
+    let Res = await a.json();
+    if (Res.role !== "admin") {
+      router.push("/");
+    } else {
+      setOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("myuser")) {
+      const myuser = JSON.parse(localStorage.getItem("myuser"));
+      fetchAdmin(myuser.token);
+    } else {
+      router.push("/");
+    }
+  }, []);
+  if (!open) {
+    return null;
+  }
 
   return (
     <>

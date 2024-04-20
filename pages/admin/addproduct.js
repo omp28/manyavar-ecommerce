@@ -43,13 +43,11 @@ function Addproduct() {
     };
 
     try {
-      console.log("send data", [productData]);
       const response = await Axios.post("/api/addproducts", productData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("response", response);
       if (response.data.success) {
         toast.success("Product added successfully");
       }

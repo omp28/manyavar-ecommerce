@@ -63,7 +63,6 @@ const handler = async (req, res) => {
         });
         return;
       }
-      // console.log("req.body---->>>>", req.body);
       const pincode_length = req.body.zip.length;
       const phone_length = req.body.phone.length;
 
